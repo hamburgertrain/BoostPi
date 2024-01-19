@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/d2r2/go-i2c"
+	"github.com/rzetterberg/elmobd"
 )
 
 // i2c bus (0 -- original Pi, 1 -- Rev 2 Pi)
@@ -62,8 +63,15 @@ var En uint8 = 0b00000100 // Enable bit
 var Rw uint8 = 0b00000010 // Read/Write bit
 var Rs uint8 = 0b00000001 // Register select bit
 
+var ELM327_DEVICE_LOCATION string = "/dev/ttyUSB0"
+var ELM327_DEBUG bool = true
+
 func main() {
-	fmt.Println("Initializing connection...")
+	fmt.Println("Initializing connection to ELM327 device...")
+	ContactElm327Device()
+	fmt.Println("Connection initialized")
+
+	fmt.Println("Initializing connection to i2c display...")
 	// Create new connection to I2C bus on 2 line with address 0x27
 	i2cConnection, err := i2c.NewI2C(ADDRESS, I2CBUS)
 	if err != nil {
@@ -101,6 +109,23 @@ func main() {
 
 	fmt.Println("Turning display off")
 	_ = WriteCmd(i2cConnection, LCD_NOBACKLIGHT)
+}
+
+// Establish contact with an ELM327 OBD-II reader
+func ContactElm327Device() {
+	dev, err := elmobd.NewDevice(ELM327_DEVICE_LOCATION, ELM327_DEBUG)
+	if err != nil {
+		fmt.Println("Failed to create new device", err)
+		return
+	}
+
+	version, err := dev.GetVersion()
+	if err != nil {
+		fmt.Println("Failed to get version", err)
+		return
+	}
+
+	fmt.Println("Device has version", version)
 }
 
 // Write a single command
