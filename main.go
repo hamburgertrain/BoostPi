@@ -1,3 +1,4 @@
+// (eventually) Pull from ELM327 device and write boost data to an i2c LCD
 package main
 
 import (
@@ -14,7 +15,7 @@ var I2CBUS int = 1
 // LCD Address
 var ADDRESS uint8 = 0x27
 
-// commands
+// Commands
 var LCD_CLEARDISPLAY uint8 = 0x01
 var LCD_RETURNHOME uint8 = 0x02
 var LCD_ENTRYMODESET uint8 = 0x04
@@ -24,13 +25,13 @@ var LCD_FUNCTIONSET uint8 = 0x20
 var LCD_SETCGRAMADDR uint8 = 0x40
 var LCD_SETDDRAMADDR uint8 = 0x80
 
-// flags for display entry mode
+// Flags for display entry mode
 var LCD_ENTRYRIGHT uint8 = 0x00
 var LCD_ENTRYLEFT uint8 = 0x02
 var LCD_ENTRYSHIFTINCREMENT uint8 = 0x01
 var LCD_ENTRYSHIFTDECREMENT uint8 = 0x00
 
-// flags for display on/off control
+// Flags for display on/off control
 var LCD_DISPLAYON uint8 = 0x04
 var LCD_DISPLAYOFF uint8 = 0x00
 var LCD_CURSORON uint8 = 0x02
@@ -38,13 +39,13 @@ var LCD_CURSOROFF uint8 = 0x00
 var LCD_BLINKON uint8 = 0x01
 var LCD_BLINKOFF uint8 = 0x00
 
-// flags for display/cursor shift
+// Flags for display/cursor shift
 var LCD_DISPLAYMOVE uint8 = 0x08
 var LCD_CURSORMOVE uint8 = 0x00
 var LCD_MOVERIGHT uint8 = 0x04
 var LCD_MOVELEFT uint8 = 0x00
 
-// flags for function set
+// Flags for function set
 var LCD_8BITMODE uint8 = 0x10
 var LCD_4BITMODE uint8 = 0x00
 var LCD_2LINE uint8 = 0x08
@@ -52,10 +53,11 @@ var LCD_1LINE uint8 = 0x00
 var LCD_5x10DOTS uint8 = 0x04
 var LCD_5x8DOTS uint8 = 0x00
 
-// flags for backlight control
+// Flags for backlight control
 var LCD_BACKLIGHT uint8 = 0x08
 var LCD_NOBACKLIGHT uint8 = 0x00
 
+// Modes
 var En uint8 = 0b00000100 // Enable bit
 var Rw uint8 = 0b00000010 // Read/Write bit
 var Rs uint8 = 0b00000001 // Register select bit
