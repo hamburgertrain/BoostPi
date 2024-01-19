@@ -79,7 +79,7 @@ func main() {
 	fmt.Println("Display reset")
 
 	fmt.Println("Writing to display...")
-	LcdDisplayString(i2cConnection, "Hello!", 1, 0)
+	LcdDisplayString(i2cConnection, "Hello world!", 1, 0)
 	fmt.Println("Writing done.")
 
 	time.Sleep(5 * time.Second)
@@ -90,16 +90,12 @@ func main() {
 
 	time.Sleep(1 * time.Second)
 
-	// for i := 0; i < 30; i++ {
-	// 	LcdDisplayString(i2cConnection, string(i), 1, 0)
-	// 	time.Sleep(1 * time.Second)
-	// 	Clear(i2cConnection)
-	// 	time.Sleep(2 * time.Second)
-	// }
-
-	fmt.Println("Writing to display...")
-	LcdDisplayString(i2cConnection, "shidd", 1, 0)
-	fmt.Println("Writing done.")
+	for i := 0; i < 30; i++ {
+		LcdDisplayString(i2cConnection, string(i), 1, 0)
+		time.Sleep(1 * time.Second)
+		Clear(i2cConnection)
+		time.Sleep(2 * time.Second)
+	}
 
 	time.Sleep(5 * time.Second)
 
@@ -135,8 +131,8 @@ func Reset(connection *i2c.I2C) {
 
 // Clear lcd and set to home
 func Clear(connection *i2c.I2C) {
-	_ = WriteCmd(connection, LCD_CLEARDISPLAY)
-	_ = WriteCmd(connection, LCD_RETURNHOME)
+	LcdWrite(connection, LCD_CLEARDISPLAY, 0)
+	LcdWrite(connection, LCD_RETURNHOME, 0)
 }
 
 // Clocks EN to latch command
