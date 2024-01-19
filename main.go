@@ -209,7 +209,6 @@ func LcdDisplayString(connection *i2c.I2C, str string, line uint8, pos uint8) {
 		fmt.Printf("Writing %s\n", str[i])
 		LcdWrite(connection, str[i], Rs)
 	}
-
 }
 
 // Simulate boost climbing
