@@ -97,14 +97,7 @@ func main() {
 	fmt.Println("Clear")
 
 	time.Sleep(1 * time.Second)
-
-	for i := 0; i < 30; i++ {
-		LcdDisplayString(i2cConnection, string(i), 1, 0)
-		time.Sleep(1 * time.Second)
-		Clear(i2cConnection)
-		time.Sleep(2 * time.Second)
-	}
-
+	SimulateBoost(i2cConnection)
 	time.Sleep(5 * time.Second)
 
 	fmt.Println("Turning display off")
@@ -126,6 +119,15 @@ func ContactElm327Device() {
 	}
 
 	fmt.Println("Device has version", version)
+
+	rpm, err := dev.RunOBDCommand(elmobd.NewEngineRPM())
+
+	if err != nil {
+		fmt.Println("Failed to get rpm", err)
+		return
+	}
+
+	fmt.Printf("Engine spins at %s RPMs\n", rpm.ValueAsLit())
 }
 
 // Write a single command
@@ -208,4 +210,14 @@ func LcdDisplayString(connection *i2c.I2C, str string, line uint8, pos uint8) {
 		LcdWrite(connection, str[i], Rs)
 	}
 
+}
+
+// Simulate boost climbing
+func SimulateBoost(connection *i2c.I2C) {
+	for i := 0; i < 30; i++ {
+		LcdDisplayString(connection, string(i), 1, 0)
+		time.Sleep(1 * time.Second)
+		Clear(connection)
+		time.Sleep(2 * time.Second)
+	}
 }
