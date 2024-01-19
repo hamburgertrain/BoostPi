@@ -74,23 +74,34 @@ func main() {
 	fmt.Println("Connection initialized")
 
 	fmt.Println("Resetting display...")
-	LcdWrite(i2cConnection, 0x03, 0)
-	LcdWrite(i2cConnection, 0x03, 0)
-	LcdWrite(i2cConnection, 0x03, 0)
-	LcdWrite(i2cConnection, 0x02, 0)
-
-	LcdWrite(i2cConnection, LCD_FUNCTIONSET|LCD_2LINE|LCD_5x8DOTS|LCD_4BITMODE, 0)
-	LcdWrite(i2cConnection, LCD_DISPLAYCONTROL|LCD_DISPLAYON, 0)
-	LcdWrite(i2cConnection, LCD_CLEARDISPLAY, 0)
-	LcdWrite(i2cConnection, LCD_ENTRYMODESET|LCD_ENTRYLEFT, 0)
-	time.Sleep(1)
+	Reset(i2cConnection)
+	time.Sleep(1 * time.Second)
 	fmt.Println("Display reset")
 
 	fmt.Println("Writing to display...")
 	LcdDisplayString(i2cConnection, "Hello!", 1, 0)
 	fmt.Println("Writing done.")
 
-	time.Sleep(10 * time.Second)
+	time.Sleep(5 * time.Second)
+
+	fmt.Println("Clearing display...")
+	Clear(i2cConnection)
+	fmt.Println("Clear")
+
+	time.Sleep(1 * time.Second)
+
+	// for i := 0; i < 30; i++ {
+	// 	LcdDisplayString(i2cConnection, string(i), 1, 0)
+	// 	time.Sleep(1 * time.Second)
+	// 	Clear(i2cConnection)
+	// 	time.Sleep(2 * time.Second)
+	// }
+
+	fmt.Println("Writing to display...")
+	LcdDisplayString(i2cConnection, "shidd", 1, 0)
+	fmt.Println("Writing done.")
+
+	time.Sleep(5 * time.Second)
 
 	fmt.Println("Turning display off")
 	_ = WriteCmd(i2cConnection, LCD_NOBACKLIGHT)
@@ -98,13 +109,28 @@ func main() {
 
 // Write a single command
 func WriteCmd(connection *i2c.I2C, cmd uint8) int {
+	fmt.Printf("Value came in as: %d\n", cmd)
 	buf := make([]byte, 1)
 	buf[0] = byte(cmd) // cast uint8 to byte
+	fmt.Printf("Writing value as: %d\n", buf[0])
 	res, err := connection.WriteBytes(buf)
 	if err != nil {
 		log.Fatal(err)
 	}
 	return res
+}
+
+// Reset display
+func Reset(connection *i2c.I2C) {
+	LcdWrite(connection, 0x03, 0)
+	LcdWrite(connection, 0x03, 0)
+	LcdWrite(connection, 0x03, 0)
+	LcdWrite(connection, 0x02, 0)
+
+	LcdWrite(connection, LCD_FUNCTIONSET|LCD_2LINE|LCD_5x8DOTS|LCD_4BITMODE, 0)
+	LcdWrite(connection, LCD_DISPLAYCONTROL|LCD_DISPLAYON, 0)
+	LcdWrite(connection, LCD_CLEARDISPLAY, 0)
+	LcdWrite(connection, LCD_ENTRYMODESET|LCD_ENTRYLEFT, 0)
 }
 
 // Clear lcd and set to home
