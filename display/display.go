@@ -33,42 +33,18 @@ var lcdClearDisplay uint8 = 0x01
 var lcdReturnHome uint8 = 0x02
 var lcdEntryModeSet uint8 = 0x04
 var lcdDisplayControl uint8 = 0x08
-
-// var lcdCursorShift uint8 = 0x10
 var lcdFunctionSet uint8 = 0x20
-
-//var lcdSetCGRamAddress uint8 = 0x40
-//var lcdSetDDRAMAddress uint8 = 0x80
 
 // Flags for display entry mode
 // var lcdEntryRight uint8 = 0x00
 var lcdEntryLeft uint8 = 0x02
 
-//var lcdEntryShiftIncrement uint8 = 0x01
-//var lcdEntryShiftDecrement uint8 = 0x00
-
 // Flags for display on/off control
 var lcdDisplayOn uint8 = 0x04
 
-//var lcdDisplayOff uint8 = 0x00
-//var lcdCursorOn uint8 = 0x02
-//var lcdCursorOff uint8 = 0x00
-//var lcdBlinkOn uint8 = 0x01
-//var lcdBlinkOff uint8 = 0x00
-
-// Flags for display/cursor shift
-//var lcdDisplayMove uint8 = 0x08
-//var lcdCursorMove uint8 = 0x00
-//var lcdMoveRight uint8 = 0x04
-//var lcdMoveLeft uint8 = 0x00
-
 // Flags for function set
-// var lcd8BitMode uint8 = 0x10
 var lcd4BitMode uint8 = 0x00
 var lcd2Line uint8 = 0x08
-
-// var lcd1Line uint8 = 0x00
-// var lcd5x10Dots uint8 = 0x04
 var lcd5x8Dots uint8 = 0x00
 
 // Flags for backlight control
@@ -76,8 +52,7 @@ var lcdBacklight uint8 = 0x08
 var lcdNoBacklight uint8 = 0x00
 
 // Modes
-var enableBit uint8 = 0b00000100 // Enable bit
-// var readWriteBit uint8 = 0b00000010      // Read/Write bit
+var enableBit uint8 = 0b00000100         // Enable bit
 var registerSelectBit uint8 = 0b00000001 // Register select bit
 
 // Get our i2c connection
@@ -169,10 +144,3 @@ func lcdWrite(connection *i2c.I2C, cmd uint8, mode uint8) {
 	lcdWriteFourBits(connection, mode|(cmd&0xF0))
 	lcdWriteFourBits(connection, mode|((cmd<<4)&0xF0))
 }
-
-// Write a character to lcd (or character rom) 0x09: backlight | RS=DR<
-// works!
-// func lcdWriteChar(connection *i2c.I2C, charvalue uint8, mode uint8) {
-// 	lcdWriteFourBits(connection, mode|(charvalue&0xF0))
-// 	lcdWriteFourBits(connection, mode|((charvalue<<4)&0xF0))
-// }
