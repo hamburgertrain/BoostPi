@@ -44,11 +44,15 @@ func main() {
 	dev := elm327.Initialize()
 	log.Println("Connection initialized")
 
-	// Check a bunch of stuff (for now)
+	// This is good to know
 	elm327.GetVersion(dev)
-	elm327.GetEngineRpm(dev)
+
+	// We want to loop over these and display them (make sure to clear first)
 	elm327.GetMassAirflowRate(dev)
 	elm327.GetIntakeManifoldPressure(dev)
+
+	//elm327.GetEngineRpm(dev)
+
 	// This loops on command '01C01' when not connected to a vehicle
 	//elm327.CheckSupportedCommands(dev)
 
