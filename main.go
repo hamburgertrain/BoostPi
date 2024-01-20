@@ -33,8 +33,10 @@ func main() {
 	defer i2cConnection.Close()
 	log.Println("Connection initialized")
 
+	// Let's make sure we have blank slate
 	display.Reset(i2cConnection)
 
+	// Show loading text while contacting ELM327 device
 	display.LcdDisplayString(i2cConnection, "----BoostPi-----", 1, 0)
 	display.LcdDisplayString(i2cConnection, "----Loading-----", 2, 0)
 
@@ -42,6 +44,7 @@ func main() {
 	dev := elm327.Initialize()
 	log.Println("Connection initialized")
 
+	// Check a bunch of stuff (for now)
 	elm327.GetVersion(dev)
 	elm327.GetEngineRpm(dev)
 	elm327.GetMassAirflowRate(dev)
@@ -49,6 +52,7 @@ func main() {
 	// This loops on command '01C01' when not connected to a vehicle
 	//elm327.CheckSupportedCommands(dev)
 
+	// Clear our display of loading text before showing boost
 	display.Clear(i2cConnection)
 
 	log.Println("Simulating boost...")
@@ -58,7 +62,7 @@ func main() {
 	display.TurnOff(i2cConnection)
 }
 
-// Simulate boost climbing very crudely
+// Simulate boost numbers very crudely
 func SimulateBoost(connection *i2c.I2C, end int) {
 	for i := 0; i < end; i++ {
 		randomFloat := (rand.Float64() * 5) + 5
