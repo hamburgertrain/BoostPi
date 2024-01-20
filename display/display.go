@@ -61,6 +61,7 @@ var En uint8 = 0b00000100 // Enable bit
 var Rw uint8 = 0b00000010 // Read/Write bit
 var Rs uint8 = 0b00000001 // Register select bit
 
+// Get our i2c connection
 func Initialize() *i2c.I2C {
 	connection, err := i2c.NewI2C(ADDRESS, I2CBUS)
 	if err != nil {
