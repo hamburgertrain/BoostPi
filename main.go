@@ -64,8 +64,10 @@ func SimulateBoost(connection *i2c.I2C, end int) {
 		rn := (rand.Float64() * 5) + 5
 		s := strconv.FormatFloat(rn, 'f', 2, 64)
 		displayString := s + " psi"
+
 		display.LcdDisplayString(connection, displayString, 1, 0)
 		time.Sleep(1 * time.Second)
+
 		display.Clear(connection)
 	}
 }
