@@ -1,4 +1,4 @@
-// (eventually) Pull from ELM327 device and write boost data to an i2c LCD
+// Pull boost data from an ELM327 device and write it to an i2c LCD
 // Copyright (C) 2024 Tyler Bialoblocki
 //
 // This program is free software: you can redistribute it and/or modify
@@ -25,6 +25,7 @@ import (
 	"github.com/hamburgertrain/boostpi/elm327"
 )
 
+// Application entrypoint
 func main() {
 	log.Println("Initializing connection to i2c display...")
 	i2cConnection := display.Initialize()
