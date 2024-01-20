@@ -115,7 +115,7 @@ func LcdStrobe(connection *i2c.I2C, data uint8) {
 	time.Sleep(1)
 }
 
-// Write four bits I guess
+// Write four bits
 func LcdWriteFourBits(connection *i2c.I2C, data uint8) {
 	WriteCmd(connection, data|LCD_BACKLIGHT)
 	LcdStrobe(connection, data)
