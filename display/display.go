@@ -86,7 +86,7 @@ func Initialize() *i2c.I2C {
 }
 
 // Write a single command
-func WriteCmd(connection *i2c.I2C, cmd uint8) int {
+func writeCmd(connection *i2c.I2C, cmd uint8) int {
 	buf := make([]byte, 1)
 	buf[0] = byte(cmd) // cast uint8 to byte
 
@@ -101,54 +101,54 @@ func WriteCmd(connection *i2c.I2C, cmd uint8) int {
 
 // Reset display
 func Reset(connection *i2c.I2C) {
-	LcdWrite(connection, 0x03, 0)
-	LcdWrite(connection, 0x03, 0)
-	LcdWrite(connection, 0x03, 0)
-	LcdWrite(connection, 0x02, 0)
+	lcdWrite(connection, 0x03, 0)
+	lcdWrite(connection, 0x03, 0)
+	lcdWrite(connection, 0x03, 0)
+	lcdWrite(connection, 0x02, 0)
 
-	LcdWrite(connection, LCD_FUNCTIONSET|LCD_2LINE|LCD_5x8DOTS|LCD_4BITMODE, 0)
-	LcdWrite(connection, LCD_DISPLAYCONTROL|LCD_DISPLAYON, 0)
-	LcdWrite(connection, LCD_CLEARDISPLAY, 0)
-	LcdWrite(connection, LCD_ENTRYMODESET|LCD_ENTRYLEFT, 0)
+	lcdWrite(connection, LCD_FUNCTIONSET|LCD_2LINE|LCD_5x8DOTS|LCD_4BITMODE, 0)
+	lcdWrite(connection, LCD_DISPLAYCONTROL|LCD_DISPLAYON, 0)
+	lcdWrite(connection, LCD_CLEARDISPLAY, 0)
+	lcdWrite(connection, LCD_ENTRYMODESET|LCD_ENTRYLEFT, 0)
 	time.Sleep(1 * time.Nanosecond)
 }
 
 // Clear lcd and set to home
 func Clear(connection *i2c.I2C) {
-	LcdWrite(connection, LCD_CLEARDISPLAY, 0)
-	LcdWrite(connection, LCD_RETURNHOME, 0)
+	lcdWrite(connection, LCD_CLEARDISPLAY, 0)
+	lcdWrite(connection, LCD_RETURNHOME, 0)
 }
 
 // Turn the display off
 func TurnOff(connection *i2c.I2C) {
-	_ = WriteCmd(connection, LCD_NOBACKLIGHT)
+	_ = writeCmd(connection, LCD_NOBACKLIGHT)
 }
 
 // Clocks EN to latch command
-func LcdStrobe(connection *i2c.I2C, data uint8) {
-	WriteCmd(connection, data|En|LCD_BACKLIGHT)
+func lcdStrobe(connection *i2c.I2C, data uint8) {
+	writeCmd(connection, data|En|LCD_BACKLIGHT)
 	time.Sleep(1 * time.Nanosecond)
-	WriteCmd(connection, ((data & ^En) | LCD_BACKLIGHT))
+	writeCmd(connection, ((data & ^En) | LCD_BACKLIGHT))
 	time.Sleep(1 * time.Nanosecond)
 }
 
 // Write four bits
-func LcdWriteFourBits(connection *i2c.I2C, data uint8) {
-	WriteCmd(connection, data|LCD_BACKLIGHT)
-	LcdStrobe(connection, data)
+func lcdWriteFourBits(connection *i2c.I2C, data uint8) {
+	writeCmd(connection, data|LCD_BACKLIGHT)
+	lcdStrobe(connection, data)
 }
 
 // Write a command to lcd
-func LcdWrite(connection *i2c.I2C, cmd uint8, mode uint8) {
-	LcdWriteFourBits(connection, mode|(cmd&0xF0))
-	LcdWriteFourBits(connection, mode|((cmd<<4)&0xF0))
+func lcdWrite(connection *i2c.I2C, cmd uint8, mode uint8) {
+	lcdWriteFourBits(connection, mode|(cmd&0xF0))
+	lcdWriteFourBits(connection, mode|((cmd<<4)&0xF0))
 }
 
 // Write a character to lcd (or character rom) 0x09: backlight | RS=DR<
 // works!
-func LcdWriteChar(connection *i2c.I2C, charvalue uint8, mode uint8) {
-	LcdWriteFourBits(connection, mode|(charvalue&0xF0))
-	LcdWriteFourBits(connection, mode|((charvalue<<4)&0xF0))
+func lcdWriteChar(connection *i2c.I2C, charvalue uint8, mode uint8) {
+	lcdWriteFourBits(connection, mode|(charvalue&0xF0))
+	lcdWriteFourBits(connection, mode|((charvalue<<4)&0xF0))
 }
 
 // Put string function with optional char positioning
@@ -165,9 +165,9 @@ func LcdDisplayString(connection *i2c.I2C, str string, line uint8, pos uint8) {
 		posNew = 0x54 + pos
 	}
 
-	LcdWrite(connection, 0x80+posNew, 0)
+	lcdWrite(connection, 0x80+posNew, 0)
 
 	for i := 0; i < len(str); i++ {
-		LcdWrite(connection, str[i], Rs)
+		lcdWrite(connection, str[i], Rs)
 	}
 }
