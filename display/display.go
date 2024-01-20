@@ -65,7 +65,7 @@ var Rs uint8 = 0b00000001 // Register select bit
 func Initialize() *i2c.I2C {
 	connection, err := i2c.NewI2C(ADDRESS, I2CBUS)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("Could not initialize i2c device:", err)
 	}
 	return connection
 }
@@ -78,7 +78,7 @@ func WriteCmd(connection *i2c.I2C, cmd uint8) int {
 	log.Printf("Writing value as: %d\n", buf[0])
 	res, err := connection.WriteBytes(buf)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("Could not write to i2c device:", err)
 	}
 	return res
 }
