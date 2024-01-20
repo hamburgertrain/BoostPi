@@ -1,8 +1,11 @@
+[![Go](https://github.com/hamburgertrain/BoostPi/actions/workflows/go.yml/badge.svg)](https://github.com/hamburgertrain/BoostPi/actions/workflows/go.yml)
+
 # BoostPi
 Raspberry pi based boost monitor written in go
 
 ## Requirements
 Go 1.22.6
+
 i2c-tools
 
 ## Building
