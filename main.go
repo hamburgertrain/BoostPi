@@ -32,7 +32,7 @@ func main() {
 	log.Println("Initializing connection to ELM327 device...")
 	dev, err := elm327.Initialize()
 	if err != nil {
-		log.Println("Failed to create new device", err)
+		log.Println("elm327 could not initialize device:", err)
 	}
 	log.Println("Connection initialized")
 

@@ -14,10 +14,8 @@ var ELM327_DEBUG bool = true
 func Initialize() (*elmobd.Device, error) {
 	dev, err := elmobd.NewDevice(ELM327_DEVICE_LOCATION, ELM327_DEBUG)
 	if err != nil {
-		log.Println("Failed to create new device", err)
 		return nil, err
 	}
-
 	return dev, nil
 }
 
