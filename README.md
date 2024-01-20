@@ -4,9 +4,11 @@
 Raspberry pi based boost monitor written in go
 
 ## Requirements
+RaspberryPi (should be compatible with any version) running Debian 12 bookworm
+
 Go 1.22.6
 
-i2c-tools
+i2c-tools/stable,now 4.3-2+b3 arm64
 
 ## Building
 Build using linux, even WSL will work.
