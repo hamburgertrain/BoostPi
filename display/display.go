@@ -113,8 +113,9 @@ func TurnOff(connection *i2c.I2C) {
 
 // Write a single command
 func writeCmd(connection *i2c.I2C, cmd uint8) int {
+	// cast uint8 to byte in order to be written
 	buf := make([]byte, 1)
-	buf[0] = byte(cmd) // cast uint8 to byte
+	buf[0] = byte(cmd)
 
 	res, err := connection.WriteBytes(buf)
 	if err != nil {
