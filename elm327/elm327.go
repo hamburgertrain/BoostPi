@@ -22,12 +22,12 @@ import (
 	"github.com/rzetterberg/elmobd"
 )
 
-var ELM327_DEVICE_LOCATION string = "/dev/ttyUSB0"
-var ELM327_DEBUG bool = true
+var elm327DeviceLocation string = "/dev/ttyUSB0"
+var elm327Debug bool = true
 
 // Establish contact with an ELM327 OBD-II reader
 func Initialize() *elmobd.Device {
-	dev, err := elmobd.NewDevice(ELM327_DEVICE_LOCATION, ELM327_DEBUG)
+	dev, err := elmobd.NewDevice(elm327DeviceLocation, elm327Debug)
 	if err != nil {
 		log.Fatal("Could not initialize ELM327 device:", err)
 	}
