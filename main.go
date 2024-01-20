@@ -30,8 +30,16 @@ func main() {
 	time.Sleep(5 * time.Second)
 
 	log.Println("Initializing connection to ELM327 device...")
-	elm327.ContactElm327Device()
+	dev, err := elm327.Initialize()
+	if err != nil {
+		log.Println("Failed to create new device", err)
+	}
 	log.Println("Connection initialized")
+
+	elm327.GetVersion(dev)
+	elm327.GetEngineRpm(dev)
+	elm327.GetMassAirflowRate(dev)
+	elm327.GetIntakeManifoldPressure(dev)
 
 	log.Println("Clearing display...")
 	display.Clear(i2cConnection)
