@@ -8,7 +8,7 @@ RaspberryPi (should be compatible with any version as long as it's 64-bit) with 
 
 A USB OBD-II ELM327 reader
 
-An i2c 16x2 Serial LCD
+An i2c 1602 16x2 Serial LCD
 
 i2c-tools/stable >= 4.3-2+b3
 
