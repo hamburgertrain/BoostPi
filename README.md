@@ -1,10 +1,10 @@
 [![Go](https://github.com/hamburgertrain/BoostPi/actions/workflows/go.yml/badge.svg)](https://github.com/hamburgertrain/BoostPi/actions/workflows/go.yml)
 
 # BoostPi
-Raspberry pi based boost monitor written in go
+RaspberryPi based boost monitor written in go
 
 ## Target System Requirements
-RaspberryPi (should be compatible with any version) with i2c enabled running Debian 12 bookworm
+RaspberryPi (should be compatible with any version as long as it's 64-bit) with i2c enabled running Debian 12 bookworm
 
 i2c-tools/stable,now 4.3-2+b3 arm64
 
