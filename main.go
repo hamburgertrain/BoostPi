@@ -59,7 +59,7 @@ func main() {
 	SimulateBoost(i2cConnection, 30)
 
 	log.Println("Turning display off")
-	display.TurnOff(i2cConnection)
+	display.TurnBacklightOff(i2cConnection)
 }
 
 // Simulate boost numbers very crudely
