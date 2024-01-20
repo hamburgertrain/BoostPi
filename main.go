@@ -38,6 +38,8 @@ func main() {
 	elm327.GetEngineRpm(dev)
 	elm327.GetMassAirflowRate(dev)
 	elm327.GetIntakeManifoldPressure(dev)
+	// This loops on command '01C01' when not connected to a vehicle
+	//elm327.CheckSupportedCommands(dev)
 	log.Println("Vehicle sensors polled")
 
 	log.Println("Clearing display...")

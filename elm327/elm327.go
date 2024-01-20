@@ -2,6 +2,7 @@
 package elm327
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/rzetterberg/elmobd"
@@ -62,4 +63,22 @@ func GetMassAirflowRate(dev *elmobd.Device) {
 	}
 
 	log.Printf("Mass airflow rate is %s\n", mafr.ValueAsLit())
+}
+
+// Check which commands are supported on a connected vehicle
+func CheckSupportedCommands(dev *elmobd.Device) {
+	supported, err := dev.CheckSupportedCommands()
+	if err != nil {
+		fmt.Println("Failed to check supported commands", err)
+		return
+	}
+
+	allCommands := elmobd.GetSensorCommands()
+	carCommands := supported.FilterSupported(allCommands)
+
+	fmt.Printf("%d of %d commands supported:\n", len(carCommands), len(allCommands))
+
+	for _, cmd := range carCommands {
+		fmt.Printf("- %s supported\n", cmd.Key())
+	}
 }
