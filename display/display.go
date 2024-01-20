@@ -111,9 +111,9 @@ func TurnOff(connection *i2c.I2C) {
 // Clocks EN to latch command
 func LcdStrobe(connection *i2c.I2C, data uint8) {
 	WriteCmd(connection, data|En|LCD_BACKLIGHT)
-	time.Sleep(1)
+	time.Sleep(1 * time.Nanosecond)
 	WriteCmd(connection, ((data & ^En) | LCD_BACKLIGHT))
-	time.Sleep(1)
+	time.Sleep(1 * time.Nanosecond)
 }
 
 // Write four bits
