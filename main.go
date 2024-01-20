@@ -17,6 +17,7 @@ package main
 
 import (
 	"log"
+	"math/rand"
 	"strconv"
 	"time"
 
@@ -51,18 +52,18 @@ func main() {
 	display.Clear(i2cConnection)
 
 	log.Println("Simulating boost...")
-	SimulateBoost(i2cConnection, 7, 18)
-	time.Sleep(1 * time.Second)
-	SimulateBoost(i2cConnection, 15, 21)
+	SimulateBoost(i2cConnection, 30)
 
 	log.Println("Turning display off")
 	display.TurnOff(i2cConnection)
 }
 
 // Simulate boost climbing very crudely
-func SimulateBoost(connection *i2c.I2C, start int, end int) {
-	for i := start; i < end; i++ {
-		displayString := strconv.Itoa(i) + " psi"
+func SimulateBoost(connection *i2c.I2C, end int) {
+	for i := 0; i < end; i++ {
+		rn := (rand.Float64() * 5) + 5
+		s := strconv.FormatFloat(rn, 'f', 2, 64)
+		displayString := s + " psi"
 		display.LcdDisplayString(connection, displayString, 1, 0)
 		time.Sleep(1 * time.Second)
 		display.Clear(connection)
