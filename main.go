@@ -17,38 +17,27 @@ func main() {
 	defer i2cConnection.Close()
 	log.Println("Connection initialized")
 
-	log.Println("Resetting display...")
 	display.Reset(i2cConnection)
-	time.Sleep(1 * time.Second)
-	log.Println("Display reset")
 
-	log.Println("Writing to display...")
 	display.LcdDisplayString(i2cConnection, "----BoostPi-----", 1, 0)
 	display.LcdDisplayString(i2cConnection, "Now Loading.....", 2, 0)
-	log.Println("Writing done.")
-
-	time.Sleep(5 * time.Second)
 
 	log.Println("Initializing connection to ELM327 device...")
 	dev := elm327.Initialize()
 	log.Println("Connection initialized")
 
-	log.Println("Polling vehicle sensors...")
 	elm327.GetVersion(dev)
 	elm327.GetEngineRpm(dev)
 	elm327.GetMassAirflowRate(dev)
 	elm327.GetIntakeManifoldPressure(dev)
 	// This loops on command '01C01' when not connected to a vehicle
 	//elm327.CheckSupportedCommands(dev)
-	log.Println("Vehicle sensors polled")
 
-	log.Println("Clearing display...")
 	display.Clear(i2cConnection)
-	log.Println("Clear")
 
 	log.Println("Simulating boost...")
 	SimulateBoost(i2cConnection, 7, 18)
-	time.Sleep(5 * time.Second) // take a lil break
+	time.Sleep(1 * time.Second)
 	SimulateBoost(i2cConnection, 15, 21)
 
 	log.Println("Turning display off")

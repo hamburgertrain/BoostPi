@@ -80,6 +80,7 @@ func WriteCmd(connection *i2c.I2C, cmd uint8) int {
 	if err != nil {
 		log.Fatal("Could not write to i2c device:", err)
 	}
+	time.Sleep(1 * time.Nanosecond)
 
 	return res
 }
@@ -95,6 +96,7 @@ func Reset(connection *i2c.I2C) {
 	LcdWrite(connection, LCD_DISPLAYCONTROL|LCD_DISPLAYON, 0)
 	LcdWrite(connection, LCD_CLEARDISPLAY, 0)
 	LcdWrite(connection, LCD_ENTRYMODESET|LCD_ENTRYLEFT, 0)
+	time.Sleep(1 * time.Nanosecond)
 }
 
 // Clear lcd and set to home
