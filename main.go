@@ -30,28 +30,24 @@ func main() {
 	time.Sleep(5 * time.Second)
 
 	log.Println("Initializing connection to ELM327 device...")
-	dev, err := elm327.Initialize()
-	if err != nil {
-		log.Println("elm327 could not initialize device:", err)
-	}
+	dev := elm327.Initialize()
 	log.Println("Connection initialized")
 
+	log.Println("Polling vehicle sensors...")
 	elm327.GetVersion(dev)
 	elm327.GetEngineRpm(dev)
 	elm327.GetMassAirflowRate(dev)
 	elm327.GetIntakeManifoldPressure(dev)
+	log.Println("Vehicle sensors polled")
 
 	log.Println("Clearing display...")
 	display.Clear(i2cConnection)
 	log.Println("Clear")
 
-	for true {
-		log.Println("Simulating boost...")
-		SimulateBoost(i2cConnection, 7, 18)
-		time.Sleep(5 * time.Second) // take a lil break
-		SimulateBoost(i2cConnection, 15, 21)
-		break
-	}
+	log.Println("Simulating boost...")
+	SimulateBoost(i2cConnection, 7, 18)
+	time.Sleep(5 * time.Second) // take a lil break
+	SimulateBoost(i2cConnection, 15, 21)
 
 	log.Println("Turning display off")
 	display.TurnOff(i2cConnection)

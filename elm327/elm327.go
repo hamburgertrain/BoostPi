@@ -11,30 +11,31 @@ var ELM327_DEVICE_LOCATION string = "/dev/ttyUSB0"
 var ELM327_DEBUG bool = true
 
 // Establish contact with an ELM327 OBD-II reader
-func Initialize() (*elmobd.Device, error) {
+func Initialize() *elmobd.Device {
 	dev, err := elmobd.NewDevice(ELM327_DEVICE_LOCATION, ELM327_DEBUG)
 	if err != nil {
-		return nil, err
+		log.Fatal("Could not initialize ELM327 device:", err)
 	}
-	return dev, nil
+
+	return dev
 }
 
 // Get version from an ELM327 OBD-II reader
 func GetVersion(dev *elmobd.Device) {
 	version, err := dev.GetVersion()
 	if err != nil {
-		log.Println("Failed to get version", err)
+		log.Println("Failed to get version:", err)
 		return
 	}
 
-	log.Println("Device has version", version)
+	log.Println("Device has version:", version)
 }
 
 // Get engine rpm from an ELM327 OBD-II reader
 func GetEngineRpm(dev *elmobd.Device) {
 	rpm, err := dev.RunOBDCommand(elmobd.NewEngineRPM())
 	if err != nil {
-		log.Println("Failed to get rpm", err)
+		log.Println("Failed to get RPM:", err)
 		return
 	}
 
@@ -43,20 +44,20 @@ func GetEngineRpm(dev *elmobd.Device) {
 
 // Get intake manifold pressure from an ELM327 OBD-II reader
 func GetIntakeManifoldPressure(dev *elmobd.Device) {
-	imaf, err := dev.RunOBDCommand(elmobd.NewIntakeManifoldPressure())
+	imp, err := dev.RunOBDCommand(elmobd.NewIntakeManifoldPressure())
 	if err != nil {
-		log.Println("Failed to get imaf", err)
+		log.Println("Failed to get intake manifold pressure:", err)
 		return
 	}
 
-	log.Printf("Intake Manifold Pressure is %s\n", imaf.ValueAsLit())
+	log.Printf("Intake manifold pressure is %s\n", imp.ValueAsLit())
 }
 
 // Get mass airflow rate from an ELM327 OBD-II reader
 func GetMassAirflowRate(dev *elmobd.Device) {
 	mafr, err := dev.RunOBDCommand(elmobd.NewMafAirFlowRate())
 	if err != nil {
-		log.Println("Failed to get mafr", err)
+		log.Println("Failed to get mass airflow rate:", err)
 		return
 	}
 
