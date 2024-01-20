@@ -61,9 +61,9 @@ func main() {
 // Simulate boost climbing very crudely
 func SimulateBoost(connection *i2c.I2C, end int) {
 	for i := 0; i < end; i++ {
-		rn := (rand.Float64() * 5) + 5
-		s := strconv.FormatFloat(rn, 'f', 2, 64)
-		displayString := s + " psi"
+		randomFloat := (rand.Float64() * 5) + 5
+		stringfloat := strconv.FormatFloat(randomFloat, 'f', 2, 64)
+		displayString := stringfloat + " psi"
 
 		display.LcdDisplayString(connection, displayString, 1, 0)
 		time.Sleep(1 * time.Second)
