@@ -2,7 +2,6 @@
 package display
 
 import (
-	"fmt"
 	"log"
 	"time"
 
@@ -72,10 +71,10 @@ func Initialize() *i2c.I2C {
 
 // Write a single command
 func WriteCmd(connection *i2c.I2C, cmd uint8) int {
-	fmt.Printf("Value came in as: %d\n", cmd)
+	log.Printf("Value came in as: %d\n", cmd)
 	buf := make([]byte, 1)
 	buf[0] = byte(cmd) // cast uint8 to byte
-	fmt.Printf("Writing value as: %d\n", buf[0])
+	log.Printf("Writing value as: %d\n", buf[0])
 	res, err := connection.WriteBytes(buf)
 	if err != nil {
 		log.Fatal(err)
