@@ -67,19 +67,20 @@ func Initialize() *i2c.I2C {
 	if err != nil {
 		log.Fatal("Could not initialize i2c device:", err)
 	}
+
 	return connection
 }
 
 // Write a single command
 func WriteCmd(connection *i2c.I2C, cmd uint8) int {
-	log.Printf("Value came in as: %d\n", cmd)
 	buf := make([]byte, 1)
 	buf[0] = byte(cmd) // cast uint8 to byte
-	log.Printf("Writing value as: %d\n", buf[0])
+
 	res, err := connection.WriteBytes(buf)
 	if err != nil {
 		log.Fatal("Could not write to i2c device:", err)
 	}
+
 	return res
 }
 
