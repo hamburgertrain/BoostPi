@@ -8,7 +8,7 @@ RaspberryPi (should be compatible with any version) with i2c enabled running Deb
 
 i2c-tools/stable,now 4.3-2+b3 arm64
 
-An OBD-II ELM327 reader
+A USB OBD-II ELM327 reader
 
 An i2c 16x2 Serial LCD
 
