@@ -85,18 +85,25 @@ func Initialize() *i2c.I2C {
 	return connection
 }
 
-// Write a single command
-func writeCmd(connection *i2c.I2C, cmd uint8) int {
-	buf := make([]byte, 1)
-	buf[0] = byte(cmd) // cast uint8 to byte
+// Put string function with optional char positioning
+func LcdDisplayString(connection *i2c.I2C, str string, line uint8, pos uint8) {
+	var posNew uint8 = 0
 
-	res, err := connection.WriteBytes(buf)
-	if err != nil {
-		log.Fatal("Could not write to i2c device:", err)
+	if line == 1 {
+		posNew = pos
+	} else if line == 2 {
+		posNew = 0x40 + pos
+	} else if line == 3 {
+		posNew = 0x14 + pos
+	} else if line == 4 {
+		posNew = 0x54 + pos
 	}
-	time.Sleep(1 * time.Nanosecond)
 
-	return res
+	lcdWrite(connection, 0x80+posNew, 0)
+
+	for i := 0; i < len(str); i++ {
+		lcdWrite(connection, str[i], Rs)
+	}
 }
 
 // Reset display
@@ -124,6 +131,20 @@ func TurnOff(connection *i2c.I2C) {
 	_ = writeCmd(connection, LCD_NOBACKLIGHT)
 }
 
+// Write a single command
+func writeCmd(connection *i2c.I2C, cmd uint8) int {
+	buf := make([]byte, 1)
+	buf[0] = byte(cmd) // cast uint8 to byte
+
+	res, err := connection.WriteBytes(buf)
+	if err != nil {
+		log.Fatal("Could not write to i2c device:", err)
+	}
+	time.Sleep(1 * time.Nanosecond)
+
+	return res
+}
+
 // Clocks EN to latch command
 func lcdStrobe(connection *i2c.I2C, data uint8) {
 	writeCmd(connection, data|En|LCD_BACKLIGHT)
@@ -149,25 +170,4 @@ func lcdWrite(connection *i2c.I2C, cmd uint8, mode uint8) {
 func lcdWriteChar(connection *i2c.I2C, charvalue uint8, mode uint8) {
 	lcdWriteFourBits(connection, mode|(charvalue&0xF0))
 	lcdWriteFourBits(connection, mode|((charvalue<<4)&0xF0))
-}
-
-// Put string function with optional char positioning
-func LcdDisplayString(connection *i2c.I2C, str string, line uint8, pos uint8) {
-	var posNew uint8 = 0
-
-	if line == 1 {
-		posNew = pos
-	} else if line == 2 {
-		posNew = 0x40 + pos
-	} else if line == 3 {
-		posNew = 0x14 + pos
-	} else if line == 4 {
-		posNew = 0x54 + pos
-	}
-
-	lcdWrite(connection, 0x80+posNew, 0)
-
-	for i := 0; i < len(str); i++ {
-		lcdWrite(connection, str[i], Rs)
-	}
 }
