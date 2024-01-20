@@ -1,5 +1,5 @@
 # BoostPi
-Raspberry pi based boost monitor
+Raspberry pi based boost monitor written in go
 
 ## Requirements
 Go 1.22.6
