@@ -36,7 +36,6 @@ var lcdDisplayControl uint8 = 0x08
 var lcdFunctionSet uint8 = 0x20
 
 // Flags for display entry mode
-// var lcdEntryRight uint8 = 0x00
 var lcdEntryLeft uint8 = 0x02
 
 // Flags for display on/off control
