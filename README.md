@@ -17,6 +17,8 @@ Linux Host System - even WSL will suffice
 
 Go >= 1.22.6
 
+### Optional
+
 golangci-lint >= v1.55.2
 
 ## Building
