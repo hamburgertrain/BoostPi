@@ -17,13 +17,10 @@ package main
 
 import (
 	"log"
-	"math/rand"
-	"strconv"
-	"time"
 
-	"github.com/d2r2/go-i2c"
 	"github.com/hamburgertrain/boostpi/display"
 	"github.com/hamburgertrain/boostpi/elm327"
+	"github.com/hamburgertrain/boostpi/utilities"
 )
 
 // Application entrypoint
@@ -60,23 +57,9 @@ func main() {
 	display.Clear(i2cConnection)
 
 	log.Println("Simulating boost...")
-	SimulateBoost(i2cConnection, 30)
+	utilities.SimulateBoost(i2cConnection, 30)
 
 	log.Println("Turning display off")
 	display.TurnBacklightOff(i2cConnection)
 	display.TurnDisplayOff(i2cConnection)
-}
-
-// Simulate boost numbers very crudely
-func SimulateBoost(connection *i2c.I2C, end int) {
-	for i := 0; i < end; i++ {
-		randomFloat := (rand.Float64() * 5) + 5
-		stringfloat := strconv.FormatFloat(randomFloat, 'f', 2, 64)
-		displayString := stringfloat + " psi"
-
-		display.LcdDisplayString(connection, displayString, 1, 0)
-		time.Sleep(1 * time.Second)
-
-		display.Clear(connection)
-	}
 }
