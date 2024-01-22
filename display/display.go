@@ -65,7 +65,7 @@ func Initialize() *i2c.I2C {
 	return connection
 }
 
-// Put string function with optional char positioning
+// Put string function with char positioning
 func LcdDisplayString(connection *i2c.I2C, str string, line uint8, pos uint8) {
 	var posNew uint8 = 0
 
