@@ -69,14 +69,11 @@ func Initialize() *i2c.I2C {
 func LcdDisplayString(connection *i2c.I2C, str string, line uint8, pos uint8) {
 	var posNew uint8 = 0
 
+	// First or second row/line?
 	if line == 1 {
 		posNew = pos
 	} else if line == 2 {
 		posNew = 0x40 + pos
-	} else if line == 3 {
-		posNew = 0x14 + pos
-	} else if line == 4 {
-		posNew = 0x54 + pos
 	}
 
 	lcdWrite(connection, 0x80+posNew, 0)
