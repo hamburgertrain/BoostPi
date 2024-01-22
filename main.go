@@ -40,11 +40,18 @@ func main() {
 	log.Println("Initializing connection to ELM327 device...")
 	dev, err := elm327.Initialize()
 	if err != nil {
-		display.TurnBacklightOff(i2cConnection)
-		display.TurnDisplayOff(i2cConnection)
+		display.ShutdownDisplay(i2cConnection)
 		log.Fatal("Could not initialize ELM327 device:", err)
 	}
 	log.Println("Connection initialized")
+
+	// Initial probe of device
+	version, err := elm327.GetVersion(dev)
+	if err != nil {
+		display.ShutdownDisplay(i2cConnection)
+		log.Fatal("Error getting version:", err)
+	}
+	log.Println("Device has version:", version)
 
 	// Clear our display of loading text before showing boost
 	display.Clear(i2cConnection)
@@ -52,34 +59,29 @@ func main() {
 	// This loops on command '01C01' when not connected to a vehicle
 	//elm327.CheckSupportedCommands(dev)
 
-	// We want to loop over these and display them
-	massAirflowRate, err := elm327.GetMassAirflowRate(dev)
-	if err != nil {
-		log.Printf("Failed to get mass airflow rate:", err)
-	}
-	log.Printf("Mass airflow rate is %s\n", massAirflowRate)
-
-	intakeManifoldPressure, err := elm327.GetIntakeManifoldPressure(dev)
-	if err != nil {
-		log.Printf("Failed to get intake manifold pressure:", err)
-	}
-	log.Printf("Intake manifold pressure is %s\n", intakeManifoldPressure)
-
 	log.Println("Simulating boost...")
 	utilities.SimulateBoost(i2cConnection, 30)
 
 	// Show that we can fetch information and display it
 	// for true {
-	// 	version, err := elm327.GetVersion(dev)
+	// 	massAirflowRate, err := elm327.GetMassAirflowRate(dev)
 	// 	if err != nil {
-	// 		log.Println("Error getting version:", err)
+	// 		log.Printf("Failed to get mass airflow rate:", err)
 	// 	}
-	// 	log.Println("Device has version:", version)
-	// 	display.LcdDisplayString(i2cConnection, version, 1, 0)
+	// 	log.Printf("Mass airflow rate is %s\n", massAirflowRate)
+
+	// 	intakeManifoldPressure, err := elm327.GetIntakeManifoldPressure(dev)
+	// 	if err != nil {
+	// 		log.Printf("Failed to get intake manifold pressure:", err)
+	// 	}
+	// 	log.Printf("Intake manifold pressure is %s\n", intakeManifoldPressure)
+
+	// 	display.LcdDisplayString(i2cConnection, massAirflowRate, 1, 0)
+	// 	display.LcdDisplayString(i2cConnection, intakeManifoldPressure, 2, 0)
+
 	// 	time.Sleep(1 * time.Second)
 	// }
 
 	log.Println("Turning display off")
-	display.TurnBacklightOff(i2cConnection)
-	display.TurnDisplayOff(i2cConnection)
+	display.ShutdownDisplay(i2cConnection)
 }
