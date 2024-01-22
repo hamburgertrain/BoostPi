@@ -38,26 +38,46 @@ func main() {
 	display.LcdDisplayString(i2cConnection, "----Loading-----", 2, 0)
 
 	log.Println("Initializing connection to ELM327 device...")
-	dev := elm327.Initialize()
+	dev, err := elm327.Initialize()
+	if err != nil {
+		display.TurnBacklightOff(i2cConnection)
+		display.TurnDisplayOff(i2cConnection)
+		log.Fatal("Could not initialize ELM327 device:", err)
+	}
 	log.Println("Connection initialized")
-
-	// This is good to know
-	elm327.GetVersion(dev)
-
-	// We want to loop over these and display them (make sure to clear first)
-	elm327.GetMassAirflowRate(dev)
-	elm327.GetIntakeManifoldPressure(dev)
-
-	//elm327.GetEngineRpm(dev)
-
-	// This loops on command '01C01' when not connected to a vehicle
-	//elm327.CheckSupportedCommands(dev)
 
 	// Clear our display of loading text before showing boost
 	display.Clear(i2cConnection)
 
+	// This loops on command '01C01' when not connected to a vehicle
+	//elm327.CheckSupportedCommands(dev)
+
+	// We want to loop over these and display them
+	massAirflowRate, err := elm327.GetMassAirflowRate(dev)
+	if err != nil {
+		log.Printf("Failed to get mass airflow rate:", err)
+	}
+	log.Printf("Mass airflow rate is %s\n", massAirflowRate)
+
+	intakeManifoldPressure, err := elm327.GetIntakeManifoldPressure(dev)
+	if err != nil {
+		log.Printf("Failed to get intake manifold pressure:", err)
+	}
+	log.Printf("Intake manifold pressure is %s\n", intakeManifoldPressure)
+
 	log.Println("Simulating boost...")
 	utilities.SimulateBoost(i2cConnection, 30)
+
+	// Show that we can fetch information and display it
+	// for true {
+	// 	version, err := elm327.GetVersion(dev)
+	// 	if err != nil {
+	// 		log.Println("Error getting version:", err)
+	// 	}
+	// 	log.Println("Device has version:", version)
+	// 	display.LcdDisplayString(i2cConnection, version, 1, 0)
+	// 	time.Sleep(1 * time.Second)
+	// }
 
 	log.Println("Turning display off")
 	display.TurnBacklightOff(i2cConnection)

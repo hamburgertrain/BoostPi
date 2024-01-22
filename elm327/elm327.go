@@ -17,7 +17,6 @@ package elm327
 
 import (
 	"fmt"
-	"log"
 
 	"github.com/rzetterberg/elmobd"
 )
@@ -26,57 +25,53 @@ var elm327DeviceLocation string = "/dev/ttyUSB0"
 var elm327Debug bool = true
 
 // Establish contact with an ELM327 OBD-II reader
-func Initialize() *elmobd.Device {
+func Initialize() (*elmobd.Device, error) {
 	dev, err := elmobd.NewDevice(elm327DeviceLocation, elm327Debug)
 	if err != nil {
-		log.Fatal("Could not initialize ELM327 device:", err)
+		return nil, err
 	}
 
-	return dev
+	return dev, nil
 }
 
 // Get version from an ELM327 OBD-II reader
-func GetVersion(dev *elmobd.Device) {
+func GetVersion(dev *elmobd.Device) (string, error) {
 	version, err := dev.GetVersion()
 	if err != nil {
-		log.Println("Failed to get version:", err)
-		return
+		return "", err
 	}
 
-	log.Println("Device has version:", version)
+	return version, nil
 }
 
 // Get engine rpm from an ELM327 OBD-II reader
-func GetEngineRpm(dev *elmobd.Device) {
+func GetEngineRpm(dev *elmobd.Device) (string, error) {
 	rpm, err := dev.RunOBDCommand(elmobd.NewEngineRPM())
 	if err != nil {
-		log.Println("Failed to get RPM:", err)
-		return
+		return "", err
 	}
 
-	log.Printf("Engine spinning at %s RPMs\n", rpm.ValueAsLit())
+	return rpm.ValueAsLit(), nil
 }
 
 // Get intake manifold pressure from an ELM327 OBD-II reader
-func GetIntakeManifoldPressure(dev *elmobd.Device) {
+func GetIntakeManifoldPressure(dev *elmobd.Device) (string, error) {
 	imp, err := dev.RunOBDCommand(elmobd.NewIntakeManifoldPressure())
 	if err != nil {
-		log.Println("Failed to get intake manifold pressure:", err)
-		return
+		return "", err
 	}
 
-	log.Printf("Intake manifold pressure is %s\n", imp.ValueAsLit())
+	return imp.ValueAsLit(), nil
 }
 
 // Get mass airflow rate from an ELM327 OBD-II reader
-func GetMassAirflowRate(dev *elmobd.Device) {
+func GetMassAirflowRate(dev *elmobd.Device) (string, error) {
 	mafr, err := dev.RunOBDCommand(elmobd.NewMafAirFlowRate())
 	if err != nil {
-		log.Println("Failed to get mass airflow rate:", err)
-		return
+		return "", err
 	}
 
-	log.Printf("Mass airflow rate is %s\n", mafr.ValueAsLit())
+	return mafr.ValueAsLit(), nil
 }
 
 // Check which commands are supported on a connected vehicle
