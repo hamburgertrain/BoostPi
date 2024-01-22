@@ -55,9 +55,6 @@ func main() {
 	// Clear our display of loading text before showing boost
 	display.Clear(i2cConnection)
 
-	// This loops on command '01C01' when not connected to a vehicle
-	//elm327.CheckSupportedCommands(dev)
-
 	log.Println("Simulating boost...")
 	utilities.SimulateBoost(i2cConnection, 30)
 
