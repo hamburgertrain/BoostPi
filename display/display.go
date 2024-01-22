@@ -1,4 +1,4 @@
-// Facilitates connection to and execution of commands on an i2c LCD display
+// Facilitates connection to and execution of commands on an i2c LCD 16x2 display
 // Copyright (C) 2024 Tyler Bialoblocki
 //
 // This program is free software: you can redistribute it and/or modify
