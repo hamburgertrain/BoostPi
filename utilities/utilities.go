@@ -29,7 +29,7 @@ import (
 
 // Loop over values and display them
 func GetAndDisplayValues(connection *i2c.I2C, obdDevice *elmobd.Device) {
-	for true {
+	for {
 		massAirflowRate, err := elm327.GetMassAirflowRate(obdDevice)
 		if err != nil {
 			display.ShowErrorAndShutdown(connection)
