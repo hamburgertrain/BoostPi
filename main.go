@@ -17,10 +17,10 @@ package main
 
 import (
 	"log"
+	"time"
 
 	"github.com/hamburgertrain/boostpi/display"
 	"github.com/hamburgertrain/boostpi/elm327"
-	"github.com/hamburgertrain/boostpi/utilities"
 )
 
 // Application entrypoint
@@ -34,12 +34,12 @@ func main() {
 	display.Reset(i2cConnection)
 
 	// Show loading text while contacting ELM327 device
-	utilities.ShowLoadingText(i2cConnection)
+	display.ShowLoadingText(i2cConnection)
 
 	log.Println("Initializing connection to ELM327 device...")
 	dev, err := elm327.Initialize()
 	if err != nil {
-		display.ShutdownDisplay(i2cConnection)
+		display.ShowErrorAndShutdown(i2cConnection)
 		log.Fatal("Could not initialize ELM327 device:", err)
 	}
 	log.Println("Connection initialized")
@@ -47,7 +47,7 @@ func main() {
 	// Initial probe of device
 	version, err := elm327.GetVersion(dev)
 	if err != nil {
-		display.ShutdownDisplay(i2cConnection)
+		display.ShowErrorAndShutdown(i2cConnection)
 		log.Fatal("Error getting version:", err)
 	}
 	log.Println("Device has version:", version)
@@ -55,28 +55,30 @@ func main() {
 	// Clear our display of loading text before showing boost
 	display.Clear(i2cConnection)
 
-	log.Println("Simulating boost...")
-	utilities.SimulateBoost(i2cConnection, 30)
+	// log.Println("Simulating boost...")
+	// utilities.SimulateBoost(i2cConnection, 30)
 
 	// Show that we can fetch information and display it
-	// for true {
-	// 	massAirflowRate, err := elm327.GetMassAirflowRate(dev)
-	// 	if err != nil {
-	// 		log.Printf("Failed to get mass airflow rate:", err)
-	// 	}
-	// 	log.Printf("Mass airflow rate is %s\n", massAirflowRate)
+	for true {
+		massAirflowRate, err := elm327.GetMassAirflowRate(dev)
+		if err != nil {
+			display.ShowErrorAndShutdown(i2cConnection)
+			log.Fatal("Failed to get mass airflow rate:", err)
+		}
+		log.Printf("Mass airflow rate is %s\n", massAirflowRate)
 
-	// 	intakeManifoldPressure, err := elm327.GetIntakeManifoldPressure(dev)
-	// 	if err != nil {
-	// 		log.Printf("Failed to get intake manifold pressure:", err)
-	// 	}
-	// 	log.Printf("Intake manifold pressure is %s\n", intakeManifoldPressure)
+		intakeManifoldPressure, err := elm327.GetIntakeManifoldPressure(dev)
+		if err != nil {
+			display.ShowErrorAndShutdown(i2cConnection)
+			log.Fatal("Failed to get intake manifold pressure:", err)
+		}
+		log.Printf("Intake manifold pressure is %s\n", intakeManifoldPressure)
 
-	// 	display.LcdDisplayString(i2cConnection, massAirflowRate, 1, 0)
-	// 	display.LcdDisplayString(i2cConnection, intakeManifoldPressure, 2, 0)
+		display.LcdDisplayString(i2cConnection, massAirflowRate, 1, 0)
+		display.LcdDisplayString(i2cConnection, intakeManifoldPressure, 2, 0)
 
-	// 	time.Sleep(1 * time.Second)
-	// }
+		time.Sleep(1 * time.Second)
+	}
 
 	log.Println("Turning display off")
 	display.ShutdownDisplay(i2cConnection)

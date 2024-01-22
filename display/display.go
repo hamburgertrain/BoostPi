@@ -55,6 +55,12 @@ var lcdNoBacklight uint8 = 0x00
 var enableBit uint8 = 0b00000100         // Enable bit
 var registerSelectBit uint8 = 0b00000001 // Register select bit
 
+// Display text
+var loadingTextLine1 = "----BoostPi-----"
+var loadingTextLine2 = "----Loading-----"
+var errorTextLine1 = "ERROR"
+var errorTextLine2 = "SHUTTING DOWN"
+
 // Get our i2c connection
 func Initialize() *i2c.I2C {
 	connection, err := i2c.NewI2C(i2cAddress, i2cBus)
@@ -63,6 +69,19 @@ func Initialize() *i2c.I2C {
 	}
 
 	return connection
+}
+
+// Display our loading text
+func ShowLoadingText(connection *i2c.I2C) {
+	LcdDisplayString(connection, loadingTextLine1, 1, 0)
+	LcdDisplayString(connection, loadingTextLine2, 2, 0)
+}
+
+// Display error text and shutdown display
+func ShowErrorAndShutdown(connection *i2c.I2C) {
+	showError(connection)
+	time.Sleep(5 * time.Second)
+	ShutdownDisplay(connection)
 }
 
 // Put string function with char positioning
@@ -107,6 +126,13 @@ func Clear(connection *i2c.I2C) {
 func ShutdownDisplay(connection *i2c.I2C) {
 	turnBacklightOff(connection)
 	turnDisplayOff(connection)
+}
+
+// Display our error text
+func showError(connection *i2c.I2C) {
+	Clear(connection)
+	LcdDisplayString(connection, errorTextLine1, 1, 0)
+	LcdDisplayString(connection, errorTextLine2, 2, 0)
 }
 
 // Turn the backlight off
