@@ -71,14 +71,15 @@ func Initialize() *i2c.I2C {
 	return connection
 }
 
-// Display our loading text
+// Show our loading text
 func ShowLoadingText(connection *i2c.I2C) {
 	LcdDisplayString(connection, loadingTextLine1, 1, 0)
 	LcdDisplayString(connection, loadingTextLine2, 2, 0)
 }
 
-// Display error text and shutdown display
+// Clear display, show error text and shutdown display
 func ShowErrorAndShutdown(connection *i2c.I2C) {
+	Clear(connection)
 	showError(connection)
 	time.Sleep(5 * time.Second)
 	ShutdownDisplay(connection)
@@ -128,9 +129,8 @@ func ShutdownDisplay(connection *i2c.I2C) {
 	turnDisplayOff(connection)
 }
 
-// Display our error text
+// Show our error text
 func showError(connection *i2c.I2C) {
-	Clear(connection)
 	LcdDisplayString(connection, errorTextLine1, 1, 0)
 	LcdDisplayString(connection, errorTextLine2, 2, 0)
 }
