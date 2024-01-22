@@ -28,16 +28,16 @@ import (
 )
 
 // Loop over values and display them
-func GetAndDisplayValues(connection *i2c.I2C, dev *elmobd.Device) {
+func GetAndDisplayValues(connection *i2c.I2C, obdDevice *elmobd.Device) {
 	for true {
-		massAirflowRate, err := elm327.GetMassAirflowRate(dev)
+		massAirflowRate, err := elm327.GetMassAirflowRate(obdDevice)
 		if err != nil {
 			display.ShowErrorAndShutdown(connection)
 			log.Fatal("Failed to get mass airflow rate:", err)
 		}
 		log.Printf("Mass airflow rate is %s\n", massAirflowRate)
 
-		intakeManifoldPressure, err := elm327.GetIntakeManifoldPressure(dev)
+		intakeManifoldPressure, err := elm327.GetIntakeManifoldPressure(obdDevice)
 		if err != nil {
 			display.ShowErrorAndShutdown(connection)
 			log.Fatal("Failed to get intake manifold pressure:", err)
