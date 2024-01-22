@@ -56,13 +56,13 @@ var enableBit uint8 = 0b00000100         // Enable bit
 var registerSelectBit uint8 = 0b00000001 // Register select bit
 
 // Get our i2c connection
-func Initialize() (*i2c.I2C, error) {
+func Initialize() *i2c.I2C {
 	connection, err := i2c.NewI2C(i2cAddress, i2cBus)
 	if err != nil {
-		return nil, err
+		log.Fatal("Could not initialize i2c device:", err)
 	}
 
-	return connection, nil
+	return connection
 }
 
 // Put string function with char positioning

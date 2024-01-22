@@ -26,10 +26,7 @@ import (
 // Application entrypoint
 func main() {
 	log.Println("Initializing connection to i2c display...")
-	i2cConnection, err := display.Initialize()
-	if err != nil {
-		log.Fatal("Could not initialize i2c device:", err)
-	}
+	i2cConnection := display.Initialize()
 	defer i2cConnection.Close()
 	log.Println("Connection initialized")
 
