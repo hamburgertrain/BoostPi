@@ -32,8 +32,6 @@ func SimulateBoost(connection *i2c.I2C, end int) {
 
 		display.LcdDisplayString(connection, displayString, 1, 0)
 		time.Sleep(1 * time.Second)
-
-		display.Clear(connection)
 	}
 }
 
