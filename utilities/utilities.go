@@ -16,13 +16,40 @@
 package utilities
 
 import (
+	"log"
 	"math/rand"
 	"strconv"
 	"time"
 
 	"github.com/d2r2/go-i2c"
 	"github.com/hamburgertrain/boostpi/display"
+	"github.com/hamburgertrain/boostpi/elm327"
+	"github.com/rzetterberg/elmobd"
 )
+
+// Loop over values and display them
+func GetAndDisplayValues(connection *i2c.I2C, dev *elmobd.Device) {
+	for true {
+		massAirflowRate, err := elm327.GetMassAirflowRate(dev)
+		if err != nil {
+			display.ShowErrorAndShutdown(connection)
+			log.Fatal("Failed to get mass airflow rate:", err)
+		}
+		log.Printf("Mass airflow rate is %s\n", massAirflowRate)
+
+		intakeManifoldPressure, err := elm327.GetIntakeManifoldPressure(dev)
+		if err != nil {
+			display.ShowErrorAndShutdown(connection)
+			log.Fatal("Failed to get intake manifold pressure:", err)
+		}
+		log.Printf("Intake manifold pressure is %s\n", intakeManifoldPressure)
+
+		display.LcdDisplayString(connection, massAirflowRate, 1, 0)
+		display.LcdDisplayString(connection, intakeManifoldPressure, 2, 0)
+
+		time.Sleep(1 * time.Second)
+	}
+}
 
 // Simulate boost numbers very crudely
 func SimulateBoost(connection *i2c.I2C, end int) {
