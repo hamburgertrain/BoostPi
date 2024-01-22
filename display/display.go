@@ -40,6 +40,7 @@ var lcdEntryLeft uint8 = 0x02
 
 // Flags for display on/off control
 var lcdDisplayOn uint8 = 0x04
+var lcdDisplayOff uint8 = 0x00
 
 // Flags for function set
 var lcd4BitMode uint8 = 0x00
@@ -107,22 +108,25 @@ func Clear(connection *i2c.I2C) {
 
 // Turn the display backlight off
 func TurnBacklightOff(connection *i2c.I2C) {
-	_ = writeCmd(connection, lcdNoBacklight)
+	writeCmd(connection, lcdNoBacklight)
+}
+
+// Turn the display off
+func TurnDisplayOff(connection *i2c.I2C) {
+	writeCmd(connection, lcdDisplayOff)
 }
 
 // Write a single command
-func writeCmd(connection *i2c.I2C, cmd uint8) int {
+func writeCmd(connection *i2c.I2C, cmd uint8) {
 	// cast uint8 to byte in order to be written
 	buf := make([]byte, 1)
 	buf[0] = byte(cmd)
 
-	res, err := connection.WriteBytes(buf)
+	_, err := connection.WriteBytes(buf)
 	if err != nil {
 		log.Fatal("Could not write to i2c device:", err)
 	}
 	time.Sleep(1 * time.Nanosecond)
-
-	return res
 }
 
 // Clocks EN to latch command
