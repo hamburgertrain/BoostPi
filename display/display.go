@@ -104,9 +104,9 @@ func Clear(connection *i2c.I2C) {
 }
 
 // Turn off backlight and display
-func ShutdownDisplay(i2cConnection *i2c.I2C) {
-	turnBacklightOff(i2cConnection)
-	turnDisplayOff(i2cConnection)
+func ShutdownDisplay(connection *i2c.I2C) {
+	turnBacklightOff(connection)
+	turnDisplayOff(connection)
 }
 
 // Turn the backlight off
