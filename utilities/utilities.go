@@ -24,6 +24,15 @@ import (
 	"github.com/hamburgertrain/boostpi/display"
 )
 
+var loadingTextLine1 = "----BoostPi-----"
+var loadingTextLine2 = "----Loading-----"
+
+// Display our loading text
+func ShowLoadingText(connection *i2c.I2C) {
+	display.LcdDisplayString(connection, loadingTextLine1, 1, 0)
+	display.LcdDisplayString(connection, loadingTextLine2, 2, 0)
+}
+
 // Simulate boost numbers very crudely
 func SimulateBoost(connection *i2c.I2C, end int) {
 	for i := 0; i < end; i++ {

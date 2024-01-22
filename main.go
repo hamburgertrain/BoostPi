@@ -34,8 +34,7 @@ func main() {
 	display.Reset(i2cConnection)
 
 	// Show loading text while contacting ELM327 device
-	display.LcdDisplayString(i2cConnection, "----BoostPi-----", 1, 0)
-	display.LcdDisplayString(i2cConnection, "----Loading-----", 2, 0)
+	utilities.ShowLoadingText(i2cConnection)
 
 	log.Println("Initializing connection to ELM327 device...")
 	dev, err := elm327.Initialize()
