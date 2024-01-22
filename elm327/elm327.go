@@ -75,6 +75,7 @@ func GetMassAirflowRate(dev *elmobd.Device) (string, error) {
 }
 
 // Check which commands are supported on a connected vehicle
+// This loops on command '01C01' when not connected to a vehicle
 func CheckSupportedCommands(dev *elmobd.Device) {
 	supported, err := dev.CheckSupportedCommands()
 	if err != nil {
