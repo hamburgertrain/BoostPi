@@ -36,7 +36,7 @@ func main() {
 	// Show loading text while contacting ELM327 device
 	display.ShowLoadingText(i2cDevice)
 
-	// we might need to try this multiple times, device was not ready right away
+	// We might need to try this multiple times, device was not ready right away
 	log.Println("Initializing connection to ELM327 device...")
 	obdDevice, err := elm327.Initialize()
 	if err != nil {
@@ -56,7 +56,7 @@ func main() {
 	// Clear our display of loading text before showing boost
 	display.Clear(i2cDevice)
 
-	// log.Println("Simulating boost...")
+	log.Println("Simulating boost...")
 	utilities.SimulateBoost(i2cDevice, 30)
 
 	// Show that we can fetch information and display it
