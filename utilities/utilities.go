@@ -58,7 +58,7 @@ func SimulateBoost(connection *i2c.I2C, end int) {
 		displayString := stringFloat + " psi"
 
 		display.LcdDisplayString(connection, displayString, 1, 0)
-		time.Sleep(1 * time.Second)
+		time.Sleep(500 * time.Millisecond)
 	}
 }
 

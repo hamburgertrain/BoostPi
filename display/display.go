@@ -114,7 +114,7 @@ func Reset(connection *i2c.I2C) {
 	lcdWrite(connection, lcdDisplayControl|lcdDisplayOn, 0)
 	lcdWrite(connection, lcdClearDisplay, 0)
 	lcdWrite(connection, lcdEntryModeSet|lcdEntryLeft, 0)
-	time.Sleep(1 * time.Nanosecond)
+	time.Sleep(5 * time.Millisecond)
 }
 
 // Clear lcd and set to home
@@ -156,15 +156,15 @@ func writeCmd(connection *i2c.I2C, cmd uint8) {
 	if err != nil {
 		log.Fatal("Could not write to i2c device:", err)
 	}
-	time.Sleep(1 * time.Nanosecond)
+	time.Sleep(5 * time.Millisecond)
 }
 
 // Clocks EN to latch command
 func lcdStrobe(connection *i2c.I2C, data uint8) {
 	writeCmd(connection, data|enableBit|lcdBacklight)
-	time.Sleep(1 * time.Nanosecond)
+	time.Sleep(5 * time.Millisecond)
 	writeCmd(connection, ((data & ^enableBit) | lcdBacklight))
-	time.Sleep(1 * time.Nanosecond)
+	time.Sleep(5 * time.Millisecond)
 }
 
 // Write four bits
