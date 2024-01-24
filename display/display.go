@@ -156,15 +156,15 @@ func writeCmd(connection *i2c.I2C, cmd uint8) {
 	if err != nil {
 		log.Fatal("Could not write to i2c device:", err)
 	}
-	time.Sleep(5 * time.Millisecond)
+	time.Sleep(1 * time.Millisecond)
 }
 
 // Clocks EN to latch command
 func lcdStrobe(connection *i2c.I2C, data uint8) {
 	writeCmd(connection, data|enableBit|lcdBacklight)
-	time.Sleep(5 * time.Millisecond)
+	time.Sleep(1 * time.Millisecond)
 	writeCmd(connection, ((data & ^enableBit) | lcdBacklight))
-	time.Sleep(5 * time.Millisecond)
+	time.Sleep(1 * time.Millisecond)
 }
 
 // Write four bits
