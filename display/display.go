@@ -22,44 +22,46 @@ import (
 	"github.com/d2r2/go-i2c"
 )
 
-// i2c bus (0 -- original Pi, 1 -- Rev 2 Pi)
-var i2cBus int = 1
+const (
+	// i2c bus (0 -- original Pi, 1 -- Rev 2 Pi)
+	i2cBus int = 1
 
-// LCD Address
-var i2cAddress uint8 = 0x27
+	// LCD Address
+	i2cAddress uint8 = 0x27
 
-// Commands
-var lcdClearDisplay uint8 = 0x01
-var lcdReturnHome uint8 = 0x02
-var lcdEntryModeSet uint8 = 0x04
-var lcdDisplayControl uint8 = 0x08
-var lcdFunctionSet uint8 = 0x20
+	// Commands
+	lcdClearDisplay   uint8 = 0x01
+	lcdReturnHome     uint8 = 0x02
+	lcdEntryModeSet   uint8 = 0x04
+	lcdDisplayControl uint8 = 0x08
+	lcdFunctionSet    uint8 = 0x20
 
-// Flags for display entry mode
-var lcdEntryLeft uint8 = 0x02
+	// Flags for display entry mode
+	lcdEntryLeft uint8 = 0x02
 
-// Flags for display on/off control
-var lcdDisplayOn uint8 = 0x04
-var lcdDisplayOff uint8 = 0x00
+	// Flags for display on/off control
+	lcdDisplayOn  uint8 = 0x04
+	lcdDisplayOff uint8 = 0x00
 
-// Flags for function set
-var lcd4BitMode uint8 = 0x00
-var lcd2Line uint8 = 0x08
-var lcd5x8Dots uint8 = 0x00
+	// Flags for function set
+	lcd4BitMode uint8 = 0x00
+	lcd2Line    uint8 = 0x08
+	lcd5x8Dots  uint8 = 0x00
 
-// Flags for backlight control
-var lcdBacklight uint8 = 0x08
-var lcdNoBacklight uint8 = 0x00
+	// Flags for backlight control
+	lcdBacklight   uint8 = 0x08
+	lcdNoBacklight uint8 = 0x00
 
-// Modes
-var enableBit uint8 = 0b00000100         // Enable bit
-var registerSelectBit uint8 = 0b00000001 // Register select bit
+	// Modes
+	enableBit         uint8 = 0b00000100 // Enable bit
+	registerSelectBit uint8 = 0b00000001 // Register select bit
 
-// Display text
-var loadingTextLine1 = "----BoostPi-----"
-var loadingTextLine2 = "----Loading-----"
-var errorTextLine1 = "ERROR"
-var errorTextLine2 = "SHUTTING DOWN"
+	// Display text
+	loadingTextLine1 string = "----BoostPi-----"
+	loadingTextLine2 string = "----Loading-----"
+	errorTextLine1   string = "ERROR"
+	errorTextLine2   string = "SHUTTING DOWN"
+)
 
 // Get our i2c connection
 func Initialize() *i2c.I2C {

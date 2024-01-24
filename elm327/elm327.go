@@ -21,8 +21,10 @@ import (
 	"github.com/rzetterberg/elmobd"
 )
 
-var elm327DeviceLocation string = "/dev/ttyUSB0"
-var elm327Debug bool = true
+const (
+	elm327DeviceLocation string = "/dev/ttyUSB0"
+	elm327Debug          bool   = true
+)
 
 // Establish contact with an ELM327 OBD-II reader
 func Initialize() (*elmobd.Device, error) {
