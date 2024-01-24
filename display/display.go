@@ -123,8 +123,9 @@ func Clear(connection *i2c.I2C) {
 	lcdWrite(connection, lcdReturnHome, 0)
 }
 
-// Turn off backlight and display
+// Turn off backlight and display after clearing
 func ShutdownDisplay(connection *i2c.I2C) {
+	Clear(connection)
 	turnBacklightOff(connection)
 	turnDisplayOff(connection)
 }
