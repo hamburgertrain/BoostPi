@@ -54,8 +54,8 @@ func GetAndDisplayValues(connection *i2c.I2C, obdDevice *elmobd.Device) {
 // Simulate boost numbers very crudely
 func SimulateBoost(connection *i2c.I2C, end int) {
 	for i := 0; i < end; i++ {
-		stringfloat := getRandomFloatAsString()
-		displayString := stringfloat + " psi"
+		stringFloat := getRandomFloatAsString()
+		displayString := stringFloat + " psi"
 
 		display.LcdDisplayString(connection, displayString, 1, 0)
 		time.Sleep(1 * time.Second)
@@ -65,6 +65,6 @@ func SimulateBoost(connection *i2c.I2C, end int) {
 // Get a random float and convert it to a string for display
 func getRandomFloatAsString() string {
 	randomFloat := (rand.Float64() * 5) + 5
-	stringfloat := strconv.FormatFloat(randomFloat, 'f', 2, 64)
-	return stringfloat
+	stringFloat := strconv.FormatFloat(randomFloat, 'f', 2, 64)
+	return stringFloat
 }
