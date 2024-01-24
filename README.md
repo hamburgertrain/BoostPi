@@ -4,13 +4,11 @@
 RaspberryPi based boost monitor written in go
 
 ## Target System Requirements
-- RaspberryPi (should be compatible with any version as long as it's 64-bit) with i2c enabled running Debian 12 bookworm
+- RaspberryPi (should be compatible with any version as long as it is 64-bit) with i2c enabled running Debian 12 bookworm
 
 - A USB OBD-II ELM327 reader
 
 - An i2c 1602 16x2 Serial LCD
-
-- i2c-tools/stable 4.3-2+b3
 
 ## Build System Requirements
 - Linux Host System - even WSL will suffice
