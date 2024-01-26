@@ -18,7 +18,7 @@ package elm327
 import (
 	"fmt"
 
-	"github.com/rzetterberg/elmobd"
+	"github.com/hamburgertrain/elmobd"
 )
 
 const (

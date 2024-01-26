@@ -24,7 +24,7 @@ import (
 	"github.com/d2r2/go-i2c"
 	"github.com/hamburgertrain/boostpi/display"
 	"github.com/hamburgertrain/boostpi/elm327"
-	"github.com/rzetterberg/elmobd"
+	"github.com/hamburgertrain/elmobd"
 )
 
 // Loop over values and display them
@@ -44,7 +44,12 @@ func GetAndDisplayValues(connection *i2c.I2C, obdDevice *elmobd.Device) {
 		}
 		log.Printf("Intake manifold pressure is %s\n", intakeManifoldPressure)
 
-		display.LcdDisplayString(connection, massAirflowRate, 1, 0)
+		// we want Turbocharger compressor inlet pressure: PID 111, 3 bytes
+
+		// Mass airflow rate is in g/s
+		// intake manifold pressure is in kPa, convert to psi via: 1kPa == 0.145038 psi
+
+		display.LcdDisplayString(connection, massAirflowRate, 1, 0) // We need to truncate this value
 		display.LcdDisplayString(connection, intakeManifoldPressure, 2, 0)
 
 		time.Sleep(1 * time.Second)

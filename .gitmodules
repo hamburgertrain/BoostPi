@@ -1,0 +1,4 @@
+[submodule "elmobd"]
+	path = elmobd
+	url = https://github.com/hamburgertrain/elmobd
+	branch = main
