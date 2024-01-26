@@ -29,12 +29,12 @@ import (
 // Loop over values and display them
 func GetAndDisplayValues(connection *i2c.I2C, obdDevice *elmobd.Device) {
 	for {
-		turboPressure, err := elm327.GetTurboCompressorInletPressure(obdDevice)
+		barometricPressure, err := elm327.GetAbsoluteBarometricPressure(obdDevice)
 		if err != nil {
 			display.ShowErrorAndShutdown(connection)
-			log.Fatal("Failed to get turbo inlet pressure:", err)
+			log.Fatal("Failed to get barometric pressure:", err)
 		}
-		log.Printf("Turbo inlet pressure is %s\n", turboPressure)
+		log.Printf("Barometric pressure is %s\n", barometricPressure)
 
 		intakeManifoldPressure, err := elm327.GetIntakeManifoldPressure(obdDevice)
 		if err != nil {
@@ -43,14 +43,19 @@ func GetAndDisplayValues(connection *i2c.I2C, obdDevice *elmobd.Device) {
 		}
 		log.Printf("Intake manifold pressure is %s\n", intakeManifoldPressure)
 
-		trueManifoldValue, err := strconv.ParseUint(intakeManifoldPressure, 10, 8)
+		parsedManifoldPressure, err := strconv.ParseUint(intakeManifoldPressure, 10, 8)
 		if err != nil {
 			display.ShowErrorAndShutdown(connection)
 			log.Fatal("Failed to convert intake manifold pressure:", err)
 		}
 
-		// For now we will approximate atmospheric pressure, we can get this via a sensor
-		calculatedBoostPressure := (float64(trueManifoldValue) * 0.145038) - 14.7
+		parsedBarometricPressure, err := strconv.ParseUint(barometricPressure, 10, 8)
+		if err != nil {
+			display.ShowErrorAndShutdown(connection)
+			log.Fatal("Failed to convert barometric pressure:", err)
+		}
+
+		calculatedBoostPressure := (float64(parsedManifoldPressure) * 0.145038) - float64(parsedBarometricPressure)
 
 		// We don't want to display negative boost pressure
 		if calculatedBoostPressure < 0 {
@@ -59,11 +64,9 @@ func GetAndDisplayValues(connection *i2c.I2C, obdDevice *elmobd.Device) {
 
 		stringFloat := strconv.FormatFloat(calculatedBoostPressure, 'f', 2, 64)
 
-		turboPressureDisplay := turboPressure + " psi"
 		intakePressureDisplay := stringFloat + " psi"
 
-		display.LcdDisplayString(connection, turboPressureDisplay, 1, 0)
-		display.LcdDisplayString(connection, intakePressureDisplay, 2, 0)
+		display.LcdDisplayString(connection, intakePressureDisplay, 1, 0)
 
 		time.Sleep(1 * time.Second)
 	}

@@ -86,6 +86,16 @@ func GetTurboCompressorInletPressure(dev *elmobd.Device) (string, error) {
 	return turboPressure.ValueAsLit(), nil
 }
 
+// Get absolute barometric pressure from an ELM327 OBD-II reader
+func GetAbsoluteBarometricPressure(dev *elmobd.Device) (string, error) {
+	barometricPressure, err := dev.RunOBDCommand(elmobd.NewAbsoluteBarometricPressure())
+	if err != nil {
+		return "", err
+	}
+
+	return barometricPressure.ValueAsLit(), nil
+}
+
 // Check which commands are supported on a connected vehicle
 // This loops on command '01C01' when not connected to a vehicle
 func CheckSupportedCommands(dev *elmobd.Device) {
