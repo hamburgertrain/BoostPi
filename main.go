@@ -56,10 +56,7 @@ func main() {
 	// Clear our display of loading text before showing boost
 	display.Clear(i2cDevice)
 
-	log.Println("Simulating boost...")
-	utilities.SimulateBoost(i2cDevice, 30)
-
-	// Show that we can fetch information and display it
+	// Fetch information and display it
 	utilities.GetAndDisplayValues(i2cDevice, obdDevice)
 
 	log.Println("Turning display off")

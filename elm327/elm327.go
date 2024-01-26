@@ -76,6 +76,16 @@ func GetMassAirflowRate(dev *elmobd.Device) (string, error) {
 	return mafr.ValueAsLit(), nil
 }
 
+// Get turbo compressor inlet pressure from an ELM327 OBD-II reader
+func GetTurboCompressorInletPressure(dev *elmobd.Device) (string, error) {
+	turboPressure, err := dev.RunOBDCommand(elmobd.NewTurbochargerCompressorInletPressure())
+	if err != nil {
+		return "", err
+	}
+
+	return turboPressure.ValueAsLit(), nil
+}
+
 // Check which commands are supported on a connected vehicle
 // This loops on command '01C01' when not connected to a vehicle
 func CheckSupportedCommands(dev *elmobd.Device) {

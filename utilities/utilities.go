@@ -17,8 +17,6 @@ package utilities
 
 import (
 	"log"
-	"math/rand"
-	"strconv"
 	"time"
 
 	"github.com/d2r2/go-i2c"
@@ -30,46 +28,17 @@ import (
 // Loop over values and display them
 func GetAndDisplayValues(connection *i2c.I2C, obdDevice *elmobd.Device) {
 	for {
-		massAirflowRate, err := elm327.GetMassAirflowRate(obdDevice)
+		turboPressure, err := elm327.GetTurboCompressorInletPressure(obdDevice)
 		if err != nil {
 			display.ShowErrorAndShutdown(connection)
 			log.Fatal("Failed to get mass airflow rate:", err)
 		}
-		log.Printf("Mass airflow rate is %s\n", massAirflowRate)
+		log.Printf("Turbo pressure is %s\n", turboPressure)
 
-		intakeManifoldPressure, err := elm327.GetIntakeManifoldPressure(obdDevice)
-		if err != nil {
-			display.ShowErrorAndShutdown(connection)
-			log.Fatal("Failed to get intake manifold pressure:", err)
-		}
-		log.Printf("Intake manifold pressure is %s\n", intakeManifoldPressure)
+		displayString := turboPressure + " psi"
 
-		// we want Turbocharger compressor inlet pressure: PID 111, 3 bytes
-
-		// Mass airflow rate is in g/s
-		// intake manifold pressure is in kPa, convert to psi via: 1kPa == 0.145038 psi
-
-		display.LcdDisplayString(connection, massAirflowRate, 1, 0) // We need to truncate this value
-		display.LcdDisplayString(connection, intakeManifoldPressure, 2, 0)
+		display.LcdDisplayString(connection, displayString, 1, 0) // We need to truncate this value
 
 		time.Sleep(1 * time.Second)
 	}
-}
-
-// Simulate boost numbers very crudely
-func SimulateBoost(connection *i2c.I2C, end int) {
-	for i := 0; i < end; i++ {
-		stringFloat := getRandomFloatAsString()
-		displayString := stringFloat + " psi"
-
-		display.LcdDisplayString(connection, displayString, 1, 0)
-		time.Sleep(500 * time.Millisecond)
-	}
-}
-
-// Get a random float and convert it to a string for display
-func getRandomFloatAsString() string {
-	randomFloat := (rand.Float64() * 5) + 5
-	stringFloat := strconv.FormatFloat(randomFloat, 'f', 2, 64)
-	return stringFloat
 }
