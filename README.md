@@ -20,6 +20,11 @@ RaspberryPi based boost monitor written in go
 - golangci-lint v1.55.2
 
 ## Building
+Clone Submodule:
+`git submodule init`
+`git submodule update`
+
+Build:
 `env GOOS=linux GOARCH=arm64 go build`
 
 ## Credits
