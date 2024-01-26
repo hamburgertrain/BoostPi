@@ -17,6 +17,7 @@ package utilities
 
 import (
 	"log"
+	"strconv"
 	"time"
 
 	"github.com/d2r2/go-i2c"
@@ -35,9 +36,28 @@ func GetAndDisplayValues(connection *i2c.I2C, obdDevice *elmobd.Device) {
 		}
 		log.Printf("Turbo pressure is %s\n", turboPressure)
 
-		displayString := turboPressure + " psi"
+		intakeManifoldPressure, err := elm327.GetIntakeManifoldPressure(obdDevice)
+		if err != nil {
+			display.ShowErrorAndShutdown(connection)
+			log.Fatal("Failed to get intake manifold pressure:", err)
+		}
+		log.Printf("Intake manifold pressure is %s\n", intakeManifoldPressure)
 
-		display.LcdDisplayString(connection, displayString, 1, 0) // We need to truncate this value
+		parsedManifoldPressure, err := strconv.ParseFloat(intakeManifoldPressure, 64)
+		if err != nil {
+			display.ShowErrorAndShutdown(connection)
+			log.Fatal("Failed to get intake manifold pressure:", err)
+		}
+
+		// For now we will approximate atmospheric pressure, we can get this via a sensor
+		calculatedBoostPressure := (parsedManifoldPressure * 0.145038) - 14.7
+		stringFloat := strconv.FormatFloat(calculatedBoostPressure, 'f', 2, 64)
+
+		turboPressureDisplay := turboPressure + " psi"
+		intakePressureDisplay := stringFloat + " psi"
+
+		display.LcdDisplayString(connection, turboPressureDisplay, 1, 0)
+		display.LcdDisplayString(connection, intakePressureDisplay, 2, 0)
 
 		time.Sleep(1 * time.Second)
 	}
