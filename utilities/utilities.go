@@ -55,7 +55,8 @@ func GetAndDisplayValues(connection *i2c.I2C, obdDevice *elmobd.Device) {
 			log.Fatal("Failed to convert barometric pressure:", err)
 		}
 
-		calculatedBoostPressure := (float64(parsedManifoldPressure) * 0.145038) - float64(parsedBarometricPressure)
+		// Do our boost calculation and convert to psi
+		calculatedBoostPressure := (float64(parsedManifoldPressure) * 0.145038) - (float64(parsedBarometricPressure) * 0.145038)
 
 		// We don't want to display negative boost pressure
 		if calculatedBoostPressure < 0 {
@@ -67,7 +68,7 @@ func GetAndDisplayValues(connection *i2c.I2C, obdDevice *elmobd.Device) {
 		intakePressureDisplay := stringFloat + " psi"
 
 		display.LcdDisplayString(connection, intakePressureDisplay, 1, 0)
-		display.LcdDisplayString(connection, barometricPressure, 2, 0) // Display for debug
+		display.LcdDisplayString(connection, barometricPressure, 2, 0) // Display for debug, this is in kPa
 
 		time.Sleep(1 * time.Second)
 	}
