@@ -34,14 +34,12 @@ func GetAndDisplayValues(connection *i2c.I2C, obdDevice *elmobd.Device) {
 			display.ShowErrorAndShutdown(connection)
 			log.Fatal("Failed to get barometric pressure:", err)
 		}
-		log.Printf("Barometric pressure is %s\n", barometricPressure)
 
 		intakeManifoldPressure, err := elm327.GetIntakeManifoldPressure(obdDevice)
 		if err != nil {
 			display.ShowErrorAndShutdown(connection)
 			log.Fatal("Failed to get intake manifold pressure:", err)
 		}
-		log.Printf("Intake manifold pressure is %s\n", intakeManifoldPressure)
 
 		parsedManifoldPressure, err := strconv.ParseUint(intakeManifoldPressure, 10, 8)
 		if err != nil {
