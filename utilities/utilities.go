@@ -56,7 +56,7 @@ func GetAndDisplayValues(connection *i2c.I2C, obdDevice *elmobd.Device) {
 		}
 
 		// Do our boost calculation and convert to psi
-		calculatedBoostPressure := (float64(parsedManifoldPressure) * 0.145038) - (float64(parsedBarometricPressure) * 0.145038)
+		calculatedBoostPressure := (float64(parsedManifoldPressure-parsedBarometricPressure) * 0.145038)
 
 		// We don't want to display negative boost pressure
 		if calculatedBoostPressure < 0 {
