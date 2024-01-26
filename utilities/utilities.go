@@ -32,9 +32,9 @@ func GetAndDisplayValues(connection *i2c.I2C, obdDevice *elmobd.Device) {
 		turboPressure, err := elm327.GetTurboCompressorInletPressure(obdDevice)
 		if err != nil {
 			display.ShowErrorAndShutdown(connection)
-			log.Fatal("Failed to get mass airflow rate:", err)
+			log.Fatal("Failed to get turbo inlet pressure:", err)
 		}
-		log.Printf("Turbo pressure is %s\n", turboPressure)
+		log.Printf("Turbo inlet pressure is %s\n", turboPressure)
 
 		intakeManifoldPressure, err := elm327.GetIntakeManifoldPressure(obdDevice)
 		if err != nil {
@@ -46,11 +46,17 @@ func GetAndDisplayValues(connection *i2c.I2C, obdDevice *elmobd.Device) {
 		trueManifoldValue, err := strconv.ParseUint(intakeManifoldPressure, 10, 8)
 		if err != nil {
 			display.ShowErrorAndShutdown(connection)
-			log.Fatal("Failed to convert manifold pressure:", err)
+			log.Fatal("Failed to convert intake manifold pressure:", err)
 		}
 
 		// For now we will approximate atmospheric pressure, we can get this via a sensor
 		calculatedBoostPressure := (float64(trueManifoldValue) * 0.145038) - 14.7
+
+		// We don't want to display negative boost pressure
+		if calculatedBoostPressure < 0 {
+			calculatedBoostPressure = 0
+		}
+
 		stringFloat := strconv.FormatFloat(calculatedBoostPressure, 'f', 2, 64)
 
 		turboPressureDisplay := turboPressure + " psi"
