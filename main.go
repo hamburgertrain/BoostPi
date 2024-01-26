@@ -45,14 +45,6 @@ func main() {
 	}
 	log.Println("Connection initialized")
 
-	// Initial probe of device
-	version, err := elm327.GetVersion(obdDevice)
-	if err != nil {
-		display.ShowErrorAndShutdown(i2cDevice)
-		log.Fatal("Error getting version:", err)
-	}
-	log.Println("Device has version:", version)
-
 	// Clear our display of loading text before showing boost
 	display.Clear(i2cDevice)
 
