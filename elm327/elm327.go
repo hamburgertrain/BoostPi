@@ -96,6 +96,16 @@ func GetAbsoluteBarometricPressure(dev *elmobd.Device) (string, error) {
 	return barometricPressure.ValueAsLit(), nil
 }
 
+// Get intake air temperature from an ELM327 OBD-II reader
+func GetIntakeAirTemp(dev *elmobd.Device) (string, error) {
+	intakeTemp, err := dev.RunOBDCommand(elmobd.NewIntakeAirTemperature())
+	if err != nil {
+		return "", err
+	}
+
+	return intakeTemp.ValueAsLit(), nil
+}
+
 // Check which commands are supported on a connected vehicle
 // This loops on command '01C01' when not connected to a vehicle
 func CheckSupportedCommands(dev *elmobd.Device) {
