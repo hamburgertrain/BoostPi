@@ -75,7 +75,7 @@ func GetAndDisplayValues(connection *i2c.I2C, obdDevice *elmobd.Device) {
 		intakePressureDisplay := stringFloat + " psi"
 
 		display.LcdDisplayString(connection, intakePressureDisplay, 1, 0)
-		display.LcdDisplayString(connection, intakeManifoldPressure+" : "+barometricPressure, 2, 0) // Display for debug, this is in kPa
+		display.LcdDisplayString(connection, intakeManifoldPressure+" kPa : "+barometricPressure+" kPa", 2, 0) // Display for debug
 
 		time.Sleep(1 * time.Second)
 	}
