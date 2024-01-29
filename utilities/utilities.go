@@ -26,6 +26,10 @@ import (
 	"github.com/hamburgertrain/elmobd"
 )
 
+const (
+	psiConversion float64 = 0.145038
+)
+
 // Loop over values and display them
 func GetAndDisplayValues(connection *i2c.I2C, obdDevice *elmobd.Device) {
 	for {
@@ -41,20 +45,25 @@ func GetAndDisplayValues(connection *i2c.I2C, obdDevice *elmobd.Device) {
 			log.Fatal("Failed to get intake manifold pressure:", err)
 		}
 
-		parsedManifoldPressure, err := strconv.ParseUint(intakeManifoldPressure, 10, 8)
+		parsedManifoldPressure, err := strconv.ParseUint(intakeManifoldPressure, 10, 32)
 		if err != nil {
 			display.ShowErrorAndShutdown(connection)
 			log.Fatal("Failed to convert intake manifold pressure:", err)
 		}
 
-		parsedBarometricPressure, err := strconv.ParseUint(barometricPressure, 10, 8)
+		parsedBarometricPressure, err := strconv.ParseUint(barometricPressure, 10, 32)
 		if err != nil {
 			display.ShowErrorAndShutdown(connection)
 			log.Fatal("Failed to convert barometric pressure:", err)
 		}
 
+		var calculatedManifoldPressure uint64 = 0
+		if parsedManifoldPressure > parsedBarometricPressure {
+			calculatedManifoldPressure = (parsedManifoldPressure - parsedBarometricPressure)
+		}
+
 		// Do our boost calculation and convert to psi
-		calculatedBoostPressure := (float64(parsedManifoldPressure-parsedBarometricPressure) * 0.145038)
+		calculatedBoostPressure := (float64(calculatedManifoldPressure) * psiConversion)
 
 		// We don't want to display negative boost pressure
 		if calculatedBoostPressure < 0 {
