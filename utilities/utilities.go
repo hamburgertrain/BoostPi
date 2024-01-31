@@ -72,7 +72,9 @@ func GetAndDisplayValues(connection *i2c.I2C, obdDevice *elmobd.Device) {
 
 		stringFloat := strconv.FormatFloat(calculatedBoostPressure, 'f', 2, 64)
 
-		intakePressureDisplay := stringFloat + " psi"
+		// Extra space is a very lazy way of overwriting the extra 'i' in 'psii'
+		// when we go from XX.XX to X.XX
+		intakePressureDisplay := stringFloat + " psi "
 
 		display.LcdDisplayString(connection, intakePressureDisplay, 1, 0)
 		display.LcdDisplayString(connection, intakeManifoldPressure+" kPa : "+barometricPressure+" kPa", 2, 0) // Display for debug
