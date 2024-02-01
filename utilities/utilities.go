@@ -89,6 +89,7 @@ func GetAndDisplayValues(connection *i2c.I2C, obdDevice *elmobd.Device) {
 		display.LcdDisplayString(connection, intakePressureDisplay, 1, 0)
 		display.LcdDisplayString(connection, peakBoostDisplay, 2, 0) // Display for debug
 
-		time.Sleep(1 * time.Second)
+		// How often should we refresh
+		time.Sleep(500 * time.Millisecond)
 	}
 }
