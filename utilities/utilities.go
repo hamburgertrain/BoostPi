@@ -32,6 +32,7 @@ const (
 
 // Loop over values and display them
 func GetAndDisplayValues(connection *i2c.I2C, obdDevice *elmobd.Device) {
+	var peakBoost float64 = 0.00
 	for {
 		barometricPressure, err := elm327.GetAbsoluteBarometricPressure(obdDevice)
 		if err != nil {
@@ -57,27 +58,36 @@ func GetAndDisplayValues(connection *i2c.I2C, obdDevice *elmobd.Device) {
 			log.Fatal("Failed to convert barometric pressure:", err)
 		}
 
+		// Calculate our manifold pressure
 		var calculatedManifoldPressure uint64 = 0
 		if parsedManifoldPressure > parsedBarometricPressure {
 			calculatedManifoldPressure = (parsedManifoldPressure - parsedBarometricPressure)
 		}
 
-		// Do our boost calculation and convert to psi
-		calculatedBoostPressure := (float64(calculatedManifoldPressure) * psiConversion)
+		// Convert to psi
+		calculatedBoost := (float64(calculatedManifoldPressure) * psiConversion)
 
 		// We don't want to display negative boost pressure
-		if calculatedBoostPressure < 0 {
-			calculatedBoostPressure = 0
+		if calculatedBoost < 0 {
+			calculatedBoost = 0
 		}
 
-		stringFloat := strconv.FormatFloat(calculatedBoostPressure, 'f', 2, 64)
+		// Keep track of our peak boost
+		if calculatedBoost > peakBoost {
+			peakBoost = calculatedBoost
+		}
+
+		// Format for display
+		calcBoostStr := strconv.FormatFloat(calculatedBoost, 'f', 2, 64)
+		peakBoostStr := strconv.FormatFloat(peakBoost, 'f', 2, 64)
 
 		// Extra space is a very lazy way of overwriting the extra 'i' in 'psii'
 		// when we go from XX.XX to X.XX
-		intakePressureDisplay := stringFloat + " psi "
+		intakePressureDisplay := "Cur: " + calcBoostStr + " psi "
+		peakBoostDisplay := "Peak: " + peakBoostStr + " psi "
 
 		display.LcdDisplayString(connection, intakePressureDisplay, 1, 0)
-		display.LcdDisplayString(connection, intakeManifoldPressure+" kPa : "+barometricPressure+" kPa", 2, 0) // Display for debug
+		display.LcdDisplayString(connection, peakBoostDisplay, 2, 0) // Display for debug
 
 		time.Sleep(1 * time.Second)
 	}
