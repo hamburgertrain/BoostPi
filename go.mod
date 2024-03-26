@@ -14,4 +14,4 @@ require (
 	golang.org/x/sys v0.16.0 // indirect
 )
 
-replace github.com/hamburgertrain/elmobd v0.0.0 => ./elmobd
+replace github.com/hamburgertrain/elmobd v0.0.0 => ./internal/elmobd
