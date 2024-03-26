@@ -13,7 +13,7 @@ RaspberryPi based boost monitor written in go
 ## Build System Requirements
 - Linux Host System - even WSL will suffice
 
-- Go 1.22.6
+- Go 1.21.6
 
 ### Optional
 
