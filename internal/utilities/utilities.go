@@ -83,7 +83,7 @@ func GetAndDisplayValues(connection *i2c.I2C, obdDevice *elmobd.Device) {
 
 		// Extra space is a very lazy way of overwriting the extra 'i' in 'psii'
 		// when we go from XX.XX to X.XX
-		intakePressureDisplay := "Cur: " + calcBoostStr + " psi "
+		intakePressureDisplay := "Curr: " + calcBoostStr + " psi "
 		peakBoostDisplay := "Peak: " + peakBoostStr + " psi "
 
 		display.LcdDisplayString(connection, intakePressureDisplay, 1, 0)
