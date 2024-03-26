@@ -23,7 +23,7 @@ import (
 
 const (
 	elm327DeviceLocation string = "/dev/ttyUSB0"
-	elm327Debug          bool   = true
+	elm327Debug          bool   = false
 )
 
 // Establish contact with an ELM327 OBD-II reader
