@@ -21,8 +21,8 @@ import (
 	"time"
 
 	"github.com/d2r2/go-i2c"
-	"github.com/hamburgertrain/boostpi/display"
-	"github.com/hamburgertrain/boostpi/elm327"
+	"github.com/hamburgertrain/boostpi/internal/display"
+	"github.com/hamburgertrain/boostpi/internal/elm327"
 	"github.com/hamburgertrain/elmobd"
 )
 

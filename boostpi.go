@@ -18,9 +18,9 @@ package main
 import (
 	"log"
 
-	"github.com/hamburgertrain/boostpi/display"
-	"github.com/hamburgertrain/boostpi/elm327"
-	"github.com/hamburgertrain/boostpi/utilities"
+	"github.com/hamburgertrain/boostpi/internal/display"
+	"github.com/hamburgertrain/boostpi/internal/elm327"
+	"github.com/hamburgertrain/boostpi/internal/utilities"
 )
 
 // Application entrypoint
