@@ -7,9 +7,13 @@ Raspberry Pi based boost monitor written in Go
 <summary>Images</summary>
 <br>
 
-![demo image](https://github.com/hamburgertrain/BoostPi/blob/main/images/demo1.jpg?raw=true)
+![demo image 1](https://github.com/hamburgertrain/BoostPi/blob/main/images/demo1.jpg?raw=true)
 
-![demo image](https://github.com/hamburgertrain/BoostPi/blob/main/images/demo2.jpg?raw=true)
+![demo image 2](https://github.com/hamburgertrain/BoostPi/blob/main/images/demo2.jpg?raw=true)
+
+![i2c backpack image](https://github.com/hamburgertrain/BoostPi/blob/main/images/i2c_backpack.jpg?raw=true)
+
+![pi wiring image](https://github.com/hamburgertrain/BoostPi/blob/main/images/pi_gpio.jpg?raw=true)
 
 </details>
 
