@@ -3,7 +3,12 @@
 # BoostPi
 Raspberry Pi based boost monitor written in Go
 
-![demo image](https://github.com/hamburgertrain/BoostPi/blob/main/images/demo.jpg?raw=true)
+<details>
+<summary>Images</summary>
+<br>
+![demo image](https://github.com/hamburgertrain/BoostPi/blob/main/images/demo1.jpg?raw=true)
+![demo image](https://github.com/hamburgertrain/BoostPi/blob/main/images/demo2.jpg?raw=true)
+</details>
 
 ## Target System Requirements
 - Raspberry Pi (should be compatible with any version as long as it is 64-bit) with i2c enabled running Debian 12 bookworm
