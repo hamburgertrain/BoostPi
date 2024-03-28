@@ -1,0 +1,14 @@
+[Unit]
+Description=BoostPi startup service
+After=syslog.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/<YOUR_USERNAME>
+ExecStart=/home/<YOUR_USERNAME>/boostpi
+Restart=on-failure
+RestartSec=10
+KillMode=process
+
+[Install]
+WantedBy=multi-user.target

@@ -18,17 +18,13 @@ package elm327
 import (
 	"fmt"
 
+	"github.com/hamburgertrain/boostpi/internal/configuration"
 	"github.com/hamburgertrain/elmobd"
 )
 
-const (
-	elm327DeviceLocation string = "/dev/ttyUSB0"
-	elm327Debug          bool   = false
-)
-
 // Establish contact with an ELM327 OBD-II reader
-func Initialize() (*elmobd.Device, error) {
-	dev, err := elmobd.NewDevice(elm327DeviceLocation, elm327Debug)
+func Initialize(config configuration.Configuration) (*elmobd.Device, error) {
+	dev, err := elmobd.NewDevice(config.Elm327DeviceLocation, config.Elm327Debug)
 	if err != nil {
 		return nil, err
 	}
@@ -111,7 +107,7 @@ func GetIntakeAirTemp(dev *elmobd.Device) (string, error) {
 func CheckSupportedCommands(dev *elmobd.Device) {
 	supported, err := dev.CheckSupportedCommands()
 	if err != nil {
-		fmt.Println("Failed to check supported commands", err)
+		fmt.Println("Failed to check supported commands: ", err)
 		return
 	}
 

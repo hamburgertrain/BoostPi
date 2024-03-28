@@ -18,24 +18,22 @@ Raspberry Pi based boost monitor written in Go
 - Go 1.21.6
 
 ### Optional
-
 - golangci-lint v1.55.2
 
 ## Setup
-
 - Enable i2c interface on Raspberry Pi via `sudo raspi-config`
 
 - Connect your display to your RaspberryPi via i2c, install i2cdetect `sudo apt-get install i2c-tools`
 
 - Use `i2cdetect -y 1` to find out the address for the display (your Pi may have a different bus number depending on revision, scanning 0 and 1 covers most cases)
 
-- Once you have your address, replace `i2cBus` and `i2cAddress` in `internal/display/display.go` as appropriate for your configuration
+- Once you have your address, replace `I2cBus` and `I2cAddress` in `boostpi-config.json` as appropriate for your configuration
 
-- Connect your USB OBD reader to the Raspberry Pi, find out what the USB address is and replace `elm327DeviceLocation` in `internal/elm327/elm327.go` as appropriate
+- Connect your USB OBD reader to the Raspberry Pi, find out what the USB address is and replace `Elm327DeviceLocation` in `boostpi-config.json` as appropriate
 
-- Follow Building instructions below
+- Follow Building instructions below or use precompiled binary
 
-- I recommend setting the BoostPi executable to run on startup of the Raspberry Pi system via systemctl, systemd, etc.
+- I recommend setting the BoostPi executable to run on startup, an example w/ systemctl has been provided in `boostpi.service`
 
 - Connect OBD to your car and if everything is set up correctly, you should be tracking current and max boost pressure in PSI
 

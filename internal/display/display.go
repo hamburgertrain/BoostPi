@@ -20,15 +20,11 @@ import (
 	"time"
 
 	"github.com/d2r2/go-i2c"
+	"github.com/hamburgertrain/boostpi/internal/configuration"
+	"github.com/hamburgertrain/boostpi/internal/utilities"
 )
 
 const (
-	// i2c bus (0 -- original Pi, 1 -- Rev 2 Pi)
-	i2cBus int = 1
-
-	// LCD Address
-	i2cAddress uint8 = 0x27
-
 	// Commands
 	lcdClearDisplay   uint8 = 0x01
 	lcdReturnHome     uint8 = 0x02
@@ -64,10 +60,15 @@ const (
 )
 
 // Get our i2c connection
-func Initialize() *i2c.I2C {
-	connection, err := i2c.NewI2C(i2cAddress, i2cBus)
+func Initialize(config configuration.Configuration) *i2c.I2C {
+	i2cAddress, err := utilities.ConvertToUint8(config.I2cAddress)
 	if err != nil {
-		log.Fatal("Could not initialize i2c device:", err)
+		log.Fatal("Could not parse i2cAddress from config: ", err)
+	}
+
+	connection, err := i2c.NewI2C(i2cAddress, config.I2cBus)
+	if err != nil {
+		log.Fatal("Could not initialize i2c device: ", err)
 	}
 
 	return connection
@@ -156,7 +157,7 @@ func writeCmd(connection *i2c.I2C, cmd uint8) {
 
 	_, err := connection.WriteBytes(buf)
 	if err != nil {
-		log.Fatal("Could not write to i2c device:", err)
+		log.Fatal("Could not write to i2c device: ", err)
 	}
 	time.Sleep(100 * time.Microsecond)
 }
