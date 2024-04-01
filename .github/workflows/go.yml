@@ -26,5 +26,23 @@ jobs:
     - name: Run golangci-lint
       uses: golangci/golangci-lint-action@v3.7.0
 
-    - name: Build
+    - name: Build boostpi executable
       run: env GOOS=linux GOARCH=arm64 go build -v
+
+    - name: Upload boostpi executable
+      uses: actions/upload-artifact@v4
+      with:
+        name: boostpi
+        path: boostpi
+    
+    - name: Upload boostpi config
+      uses: actions/upload-artifact@v4
+      with:
+        name: boostpi-config.json
+        path: boostpi-config.json
+
+    - name: Upload boostpi service
+      uses: actions/upload-artifact@v4
+      with:
+        name: boostpi.service
+        path: boostpi.service
