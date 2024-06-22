@@ -33,7 +33,10 @@ func main() {
 
 	// Suppress/increase verbosity of output
 	if !config.I2cDebug {
-		logger.ChangePackageLogLevel("i2c", logger.InfoLevel)
+		err := logger.ChangePackageLogLevel("i2c", logger.InfoLevel)
+		if err != nil {
+			log.Println("Could not set i2c log level: ", err)
+		}
 	}
 
 	log.Println("Initializing connection to i2c display...")
