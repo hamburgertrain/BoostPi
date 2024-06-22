@@ -25,6 +25,7 @@ import (
 type Configuration struct {
 	I2cBus               int    // Which i2c bus are we using? (0 for older pi revisions, 1 for newer)
 	I2cAddress           string // The address of the i2c device on the bus
+	I2cDebug             bool   // Should i2c be running in debug or info
 	Elm327DeviceLocation string // USB device location
 	Elm327Debug          bool   // elm327 debug messaging
 }

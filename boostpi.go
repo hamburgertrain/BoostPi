@@ -18,6 +18,7 @@ package main
 import (
 	"log"
 
+	"github.com/d2r2/go-logger"
 	"github.com/hamburgertrain/boostpi/internal/common"
 	"github.com/hamburgertrain/boostpi/internal/configuration"
 	"github.com/hamburgertrain/boostpi/internal/display"
@@ -29,6 +30,11 @@ func main() {
 	log.Println("Loading configuration file...")
 	var config configuration.Configuration = configuration.LoadConfiguration()
 	log.Println("Configuration file loaded")
+
+	// Suppress/increase verbosity of output
+	if !config.I2cDebug {
+		logger.ChangePackageLogLevel("i2c", logger.InfoLevel)
+	}
 
 	log.Println("Initializing connection to i2c display...")
 	i2cDevice := display.Initialize(config)
