@@ -31,17 +31,26 @@ type Configuration struct {
 }
 
 // Loads a JSON configuration file into our Configuration struct
-func LoadConfiguration() Configuration {
-	file, _ := os.Open("boostpi-config.json")
-	defer file.Close()
+func LoadConfiguration(configFileName string) (Configuration, error) {
+	file, err := os.Open(configFileName)
+	if err != nil {
+		return Configuration{}, err
+	}
+
+	defer func(file *os.File) {
+		err := file.Close()
+		if err != nil {
+			log.Println("Error closing configuration file:", err.Error())
+		}
+	}(file)
 
 	decoder := json.NewDecoder(file)
 
 	configuration := Configuration{}
-	err := decoder.Decode(&configuration)
+	err = decoder.Decode(&configuration)
 	if err != nil {
-		log.Fatal("Error loading configuration file: ", err)
+		return Configuration{}, err
 	}
 
-	return configuration
+	return configuration, nil
 }

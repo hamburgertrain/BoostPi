@@ -63,12 +63,12 @@ const (
 func Initialize(config configuration.Configuration) *i2c.I2C {
 	i2cAddress, err := utilities.ConvertToUint8(config.I2cAddress)
 	if err != nil {
-		log.Fatal("Could not parse i2cAddress from config: ", err)
+		log.Fatal("Could not parse i2cAddress from config:", err.Error())
 	}
 
 	connection, err := i2c.NewI2C(i2cAddress, config.I2cBus)
 	if err != nil {
-		log.Fatal("Could not initialize i2c device: ", err)
+		log.Fatal("Could not initialize i2c device:", err.Error())
 	}
 
 	return connection
@@ -153,11 +153,11 @@ func turnDisplayOff(connection *i2c.I2C) {
 func writeCmd(connection *i2c.I2C, cmd uint8) {
 	// cast uint8 to byte in order to be written
 	buf := make([]byte, 1)
-	buf[0] = byte(cmd)
+	buf[0] = cmd
 
 	_, err := connection.WriteBytes(buf)
 	if err != nil {
-		log.Fatal("Could not write to i2c device: ", err)
+		log.Println("Could not write to i2c device:", err.Error())
 	}
 	time.Sleep(100 * time.Microsecond)
 }
@@ -166,7 +166,7 @@ func writeCmd(connection *i2c.I2C, cmd uint8) {
 func lcdStrobe(connection *i2c.I2C, data uint8) {
 	writeCmd(connection, data|enableBit|lcdBacklight)
 	time.Sleep(500 * time.Microsecond)
-	writeCmd(connection, ((data & ^enableBit) | lcdBacklight))
+	writeCmd(connection, (data & ^enableBit)|lcdBacklight)
 	time.Sleep(100 * time.Microsecond)
 }
 

@@ -32,40 +32,40 @@ const (
 
 // Loop over values and display them
 func GetAndDisplayValues(connection *i2c.I2C, obdDevice *elmobd.Device) {
-	var peakBoost float64 = 0.00
+	var peakBoost = 0.00
 	for {
 		barometricPressure, err := elm327.GetAbsoluteBarometricPressure(obdDevice)
 		if err != nil {
 			display.ShowErrorAndShutdown(connection)
-			log.Fatal("Failed to get barometric pressure: ", err)
+			log.Fatal("Failed to get barometric pressure:", err.Error())
 		}
 
 		intakeManifoldPressure, err := elm327.GetIntakeManifoldPressure(obdDevice)
 		if err != nil {
 			display.ShowErrorAndShutdown(connection)
-			log.Fatal("Failed to get intake manifold pressure: ", err)
+			log.Fatal("Failed to get intake manifold pressure:", err.Error())
 		}
 
 		parsedManifoldPressure, err := strconv.ParseUint(intakeManifoldPressure, 10, 32)
 		if err != nil {
 			display.ShowErrorAndShutdown(connection)
-			log.Fatal("Failed to convert intake manifold pressure: ", err)
+			log.Fatal("Failed to convert intake manifold pressure:", err.Error())
 		}
 
 		parsedBarometricPressure, err := strconv.ParseUint(barometricPressure, 10, 32)
 		if err != nil {
 			display.ShowErrorAndShutdown(connection)
-			log.Fatal("Failed to convert barometric pressure: ", err)
+			log.Fatal("Failed to convert barometric pressure:", err.Error())
 		}
 
 		// Calculate our manifold pressure
 		var calculatedManifoldPressure uint64 = 0
 		if parsedManifoldPressure > parsedBarometricPressure {
-			calculatedManifoldPressure = (parsedManifoldPressure - parsedBarometricPressure)
+			calculatedManifoldPressure = parsedManifoldPressure - parsedBarometricPressure
 		}
 
 		// Convert to psi
-		calculatedBoost := (float64(calculatedManifoldPressure) * psiConversion)
+		calculatedBoost := float64(calculatedManifoldPressure) * psiConversion
 
 		// We don't want to display negative boost pressure
 		if calculatedBoost < 0 {
@@ -82,7 +82,7 @@ func GetAndDisplayValues(connection *i2c.I2C, obdDevice *elmobd.Device) {
 		peakBoostStr := strconv.FormatFloat(peakBoost, 'f', 2, 64)
 
 		// Extra space is a very lazy way of overwriting the extra 'i' in 'psii'
-		// when we go from boost values of XX.XX to X.XX
+		// when we go from boost values of XX.XX to X.XX (instead of clearing the display)
 		intakePressureDisplay := "Curr: " + calcBoostStr + " psi "
 		peakBoostDisplay := "Peak: " + peakBoostStr + " psi "
 

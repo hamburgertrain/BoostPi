@@ -16,6 +16,7 @@
 package main
 
 import (
+	"github.com/d2r2/go-i2c"
 	"log"
 
 	"github.com/d2r2/go-logger"
@@ -25,24 +26,37 @@ import (
 	"github.com/hamburgertrain/boostpi/internal/elm327"
 )
 
+const (
+	configFile string = "boostpi-config.json"
+)
+
 // Application entrypoint
 func main() {
-	log.Println("Loading configuration file...")
-	var config configuration.Configuration = configuration.LoadConfiguration()
-	log.Println("Configuration file loaded")
+	log.Println("Loading configuration file:", configFile)
+	var config configuration.Configuration
+	config, err := configuration.LoadConfiguration(configFile)
+	if err != nil {
+		log.Fatalln("Error loading configuration:", err.Error())
+	}
+	log.Println("Configuration loaded")
 
 	// Suppress/increase verbosity of output
 	if !config.I2cDebug {
 		err := logger.ChangePackageLogLevel("i2c", logger.InfoLevel)
 		if err != nil {
-			log.Println("Could not set i2c log level: ", err)
+			log.Println("Could not set i2c log level:", err.Error())
 		}
 	}
 
 	log.Println("Initializing connection to i2c display...")
 	i2cDevice := display.Initialize(config)
-	defer i2cDevice.Close()
-	log.Println("Connection initialized")
+	defer func(i2cDevice *i2c.I2C) {
+		err := i2cDevice.Close()
+		if err != nil {
+			log.Println("Error closing i2c device:", err.Error())
+		}
+	}(i2cDevice)
+	log.Println("Display connection initialized")
 
 	// Let's make sure we have blank slate
 	display.Reset(i2cDevice)
@@ -57,7 +71,7 @@ func main() {
 		display.ShowErrorAndShutdown(i2cDevice)
 		log.Fatal("Could not initialize ELM327 device: ", err)
 	}
-	log.Println("Connection initialized")
+	log.Println("ELM327 connection initialized")
 
 	// Clear our display of loading text before showing boost
 	display.Clear(i2cDevice)
