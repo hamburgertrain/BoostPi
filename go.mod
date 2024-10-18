@@ -1,6 +1,6 @@
 module github.com/hamburgertrain/boostpi
 
-go 1.21.6
+go 1.23.2
 
 require (
 	github.com/d2r2/go-i2c v0.0.0-20191123181816-73a8a799d6bc
